@@ -1,21 +1,24 @@
 import requests
+from bs4 import BeautifulSoup
 
-# realize GET para obter os cookies - verificar necessidade
-# response_get = requests.get('https://deskdata.com.br/entrar/')#configurar Json
-# cookies = response_get.cookies
+def capturar_dados(html_response):
+    soup = BeautifulSoup(html_response, 'html.parser')
+    dados_basicos = {}
+    tabela_dados_basicos = soup.find('table', class_='table-sm')
+    if tabela_dados_basicos:
+        linhas = tabela_dados_basicos.find_all('tr')
+        for linha in linhas:
+            rotulo = linha.find('th').text.strip()
+            dado = linha.find('td').text.strip()
+            dados_basicos[rotulo] = dado
+    return dados_basicos
 
-cookie_manual = {'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b':'thihft%40gmail.com%7C1713780026%7Cndq1j1f1cltUZQcJsBU295xW2G3MOxUO1U0Eolk9FWu%7C139d26a84406f74f1e4c4e3ea50efe95880c829c8f9f427a681bb636784ccd8a'}#->json; Verificar se varia
-
-
-deskdata_logon = { #JSON
-    'log': 'thihft@gmail.com',
-    'pwd': 'thiago123',
-    'wp-submit': 'Entrar',
-    'redirect_to': 'https://deskdata.com.br/wp-admin/',
-    'testcookie': '1'
-}
-url = "https://deskdata.com.br/pessoas/" #json
 def api_consulta(cpf):
+    # Configuração inicial, URL e cookies
+    cookie_manual = {
+        'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b': 'thihft%40gmail.com%7C1713780026%7Cndq1j1f1cltUZQcJsBU295xW2G3MOxUO1U0Eolk9FWu%7C139d26a84406f74f1e4c4e3ea50efe95880c829c8f9f427a681bb636784ccd8a'
+    }
+    url = "https://deskdata.com.br/pessoas/"
     payload_cpf = {
         "key-select": "cpf",
         "cpf": cpf,
@@ -25,51 +28,18 @@ def api_consulta(cpf):
         "submit": "Consultar",
         "duplicate-query-confirm": "false"
     }
-    response_post = requests.post(url, data=payload_cpf, cookies=cookie_manual)
+    # Faz a requisição POST
+    response_post = requests.post(url, data=payload_cpf, cookies=cookie_manual, allow_redirects=False)
 
+    # Verifica se houve redirecionamento
     if response_post.status_code == 302:
-        print("Redirecionamento encontrado.")
-        print("Localização do redirecionamento:", response_post.headers['Location'])
-        print(response_post.text)
+        redirect_url = response_post.headers['Location']
+        response_get = requests.get(redirect_url, cookies=cookie_manual)
+        # Usa a função capturar_dados para extrair as informações do HTML
+        dados = capturar_dados(response_get.text)
+        print(dados)  # Imprime os dados extraídos
     else:
         print("Solicitação falhou. Código de status:", response_post.status_code)
-        print(response_post.text)
-        # print(response_post.cookies)
-        req_prof = requests.get('https://deskdata.com.br/wp-admin/profile.php', data=deskdata_logon, cookies=cookie_manual)
-        print('req_prof')
-        print(req_prof.text)
-        print(req_prof.cookies)
 
-def capturar_dados(response):
-    #capturar os dados do response da pagina
-'''
-        Capturar nome, data nascimento, nome mae
-		<h5>Dados básicos</h5>
-									<div class="div-overflow-mobile">
-							  	  <table class="table table-sm table-hover">
-							    		<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar">
-							    			<th class="w-label">Nome</th>
-							    			<td class="data"></td>
-							    		</tr>
-							  				<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar">
-							  					<th class="w-label">CPF</th>
-							  					<td class="data"></td>
-						  					</tr>
-							  				<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar">
-							  					<th class="w-label">Situação do CPF</th>
-							  					<td class="data"></td>
-						  					</tr>
-								      	<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar"><th class="w-label">Gênero</th><td class="data">Masculino</td></tr>
-								      	<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar"><th class="w-label">Nascimento</th><td class="data"></td></tr>
-								      	<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar"><th class="w-label">Nacionalidade</th><td class="data">Brasileira</td></tr>
-								      	<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar"><th class="w-label">Idade</th><td class="data"></td></tr>
-					      				<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar"><th class="w-label">Nome do pai</th><td class="data">/td></tr>
-
-								      	<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar"><th class="w-label">Nome da mãe</th><td class="data">/td></tr>
-								      	<tr class="clickable" data-toggle="tooltip" data-placement="top" title="Clique para copiar"><th class="w-label">Signo</th><td class="data">Cancer</td></tr>
-
-					  					</table>
-'''
-        #return dict dos dados
-
+cpf = ''#insira o CPF
 api_consulta(cpf)
