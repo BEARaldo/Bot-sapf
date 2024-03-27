@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Apoio</title>
+    <style>
+        body {
+            background-color: #FFFFFF; /* Cor de fundo branca */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            text-align: center;
+            padding-top: 50px;
+        }
+        h1 {
+            color: #008000; /* Cor verde */
+        }
+        input[type="text"] {
+            width: 300px;
+            height: 40px;
+            font-size: 16px;
+            padding: 10px;
+            margin-top: 20px;
+            border-radius: 5px;
+            border: 1px solid #CCCCCC;
+        }
+        input[type="submit"] {
+            width: 200px;
+            height: 40px;
+            font-size: 16px;
+            background-color: #008000; /* Cor verde */
+            color: #FFFFFF; /* Cor branca */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Consulta de Apoio</h1>
+        <form action="pagina_de_consulta.php" method="POST">
+            <input type="text" name="cpf" placeholder="Digite seu CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF deve estar no formato XXX.XXX.XXX-XX" required>
+            <input type="submit" value="Registrar Apoio">
+        </form>
+    </div>
+</body>
+</html>
