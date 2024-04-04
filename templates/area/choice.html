@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usuario/css/styles.css' %}">
+    <title>Escolha</title>
+</head>
+<body>
+
+    <form method="post">{% csrf_token %}
+        <h3>Escolha como buscar a Pessoa</h3>
+    
+        <div class="option-buttons">
+          <button name="opcao" value="cpf">Buscar por CPF</button>
+          <button name="opcao" value="nome">Buscar por Nome</button>
+        </div>
+      </form>
+
+
+
+</body>
+</html>

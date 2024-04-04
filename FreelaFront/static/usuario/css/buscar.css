@@ -1,0 +1,81 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #706e6e;
+}
+
+.container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+header {
+    background-color: #2b2b2c;
+    color: #ffffff;
+    padding: 20px;
+    text-align: center;
+}
+
+.search-form {
+    padding: 20px;
+}
+
+.input-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-field input[type="text"], .input-field input[type="date"] {
+    width: 550px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.input-field input:focus {
+    border-color: #1500ff;
+    outline: none;
+}
+
+.input-field label {
+    position: absolute;
+    top: -8px;
+    left: 10px;
+    background: #fff;
+    padding: 0 5px;
+    font-size: 14px;
+    color: #25158f;
+}
+
+
+.form-actions {
+    text-align: center;
+}
+
+#cadastrar[type="submit"] {
+    background-color: #121212;
+    color: white;
+}
+#cadastrar[type="submit"] {
+    background-color: #121212;
+    color: white;
+}
+
+#cadastrar{
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 15px;
+}
+
+#cadastrar:hover {
+    opacity: 0.9;
+}
