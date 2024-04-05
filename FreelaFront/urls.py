@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from FreelaFront import views, settings
+from . import views, settings
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('login2/', views.login2, name="login2"),
+    path('login/',views.login_view, name='login_view'),
     path ('', views.home, name="home"),
     path('pagina1/', views.pagina1, name="pagina1"),
     path('accounts/', include('django.contrib.auth.urls')),

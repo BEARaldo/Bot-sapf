@@ -39,6 +39,8 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+
 ROOT_URLCONF = "FreelaFront.urls"
 
 TEMPLATES = [
@@ -116,5 +118,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-LOGOUT_REDIRECT_URL = 'home'
-LOGIN_REDIRECT_URL = 'login2'
+LOGOUT_REDIRECT_URL = 'login_view'
+LOGIN_REDIRECT_URL = 'home'
