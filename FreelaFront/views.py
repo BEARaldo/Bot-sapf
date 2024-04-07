@@ -32,7 +32,7 @@ def login_view(request):
             if user_session.login_user(titulo_eleitor, password):
                 # Armazena informações do usuário na sessão do Django, se necessário
                 request.session['user_data'] = user_session.user_data
-                return redirect('home')  # Redireciona para a página inicial após o login bem-sucedido
+                return redirect('choice')  # Redireciona para a página inicial após o login bem-sucedido
             else:
                 # Se os dados de login não forem válidos, adiciona uma mensagem de erro
                 messages.error(request, 'Usuário ou senha incorretos')
