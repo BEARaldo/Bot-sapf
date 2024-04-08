@@ -5,6 +5,15 @@ from django.contrib.auth import logout
 from django.contrib import messages
 from .services.sapf_connect import UserSession
 from .forms import LoginForm
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+
+
+#
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+
 
 def home(requests):
     return render(requests, 'core/home.html')
@@ -18,6 +27,7 @@ def login2(requests):
 @login_required
 def pagina1(requests):
     return render(requests, 'core/pagina1.html')
+
 
 def login_view(request):
     if request.method == 'POST':
@@ -52,7 +62,7 @@ def logout_view(request):
 
 
 # Verifica se o usuário está autenticado antes de chamar a função pagina1
-
+@login_required
 def choice(requests):
     if requests.method == 'POST':
         opcao = requests.POST.get('opcao', None)
@@ -62,10 +72,19 @@ def choice(requests):
             return render(requests, 'area/nome.html')
     return render(requests, 'area/choice.html')
 
+
+
 # Verifica se o usuário está autenticado antes de chamar a função pagina1
 @login_required
-def test(requests):
-    return render(requests, 'base/base.html')
+def test(request):
+    if request.method == 'POST':
+        opc = request.POST.get('opc', None)
+        if opc == 'Registrar Apoio':
+            ver_cpf = request.POST.get('cpf', None)
+            return HttpResponse(f'Sucesso! O cpf é: {ver_cpf}')
+        else:
+            return HttpResponse('Erro!')
+    return render(request, 'base/base.html')
 
 
 def reg(requests):

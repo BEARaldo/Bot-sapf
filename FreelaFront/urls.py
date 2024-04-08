@@ -1,10 +1,8 @@
-from django.contrib import admin
 from django.urls import path, include
 from . import views, settings
 
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
     path('login/',views.login_view, name='login_view'),
     path ('', views.home, name="home"),
     #pagina1 é o mesmo html da rota login/
