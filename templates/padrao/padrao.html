@@ -1,0 +1,28 @@
+
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usuario/css/styles.css' %}">
+</head>
+<body>
+    <div id="nabar">
+        <p>Nome: {{ user_data.name }}</p>
+        <p>Nº Título: {{ user_data.titulo }}</p>
+        <p>Partido: {{ user_data.partido }}</p>
+    
+    </div>
+    {% block conteudo %}
+
+    
+
+    {% endblock %}
+
+
+</body>
+</html>
+
+

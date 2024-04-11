@@ -48,8 +48,10 @@
         <form action="{% url 'test' %}" method="POST">
             {% csrf_token %}
             <input type="text" name="cpf" placeholder="Digite seu CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF deve estar no formato XXX.XXX.XXX-XX" required>
-            <input name="opc" type="submit" value="Registrar Apoio">
+            <input type="hidden" name="opc" value="Registrar Apoio">
+            <input type="submit" value="Registrar Apoio">
         </form>
+        
         
     </div>
 </body>

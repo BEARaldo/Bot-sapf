@@ -1,20 +1,9 @@
-{% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'usuario/css/styles.css' %}">
-    <title>Escolha</title>
-</head>
-<body>
 
-  <div id="nabar">
-    <p>Nome: </p>
-    <p>Título de Eleitor: </p>
 
-  </div>
+
+{% extends 'padrao/padrao.html' %}
+{% block conteudo %}
 
 <div id="quadrado">
     <form method="post">{% csrf_token %}
@@ -27,7 +16,4 @@
       </form>
 </div>
 
-
-
-</body>
-</html>
+{% endblock %}

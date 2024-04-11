@@ -53,8 +53,11 @@ def login_view(request):
         # Se não for uma requisição POST, exibe o formulário de login vazio
         form = LoginForm()
 
+    # Obtém o user_data da sessão, se existir
+    user_data = request.session.get('user_data', {})
+
     # Renderiza o template de login, passando o formulário como contexto
-    return render(request, 'login.html', {'form': form})
+    return render(request, 'login.html', {'form': form, 'user_data': user_data})
 
 def logout_view(request):
     logout(request)
@@ -62,21 +65,26 @@ def logout_view(request):
 
 
 # Verifica se o usuário está autenticado antes de chamar a função pagina1
-@login_required
-def choice(requests):
-    if requests.method == 'POST':
-        opcao = requests.POST.get('opcao', None)
+
+def choice(request):
+    user_data = request.session.get('user_data', {})  # Obtém o user_data da sessão, se existir
+
+    if request.method == 'POST':
+        opcao = request.POST.get('opcao', None)
         if opcao == 'cpf':
-            return render(requests, 'base/base.html')
+            return render(request, 'base/base.html', {'user_data': user_data})
         elif opcao == 'nome':
-            return render(requests, 'area/nome.html')
-    return render(requests, 'area/choice.html')
+            return render(request, 'area/nome.html', {'user_data': user_data})
+    
+    # Se não for um POST ou se a opção não for 'cpf' ou 'nome', renderiza 'area/choice.html' com user_data
+    return render(request, 'area/choice.html', {'user_data': user_data})
+
 
 
 
 # Verifica se o usuário está autenticado antes de chamar a função pagina1
-@login_required
 def test(request):
+    print(f"Usuário autenticado: {request.user.is_authenticated}")
     if request.method == 'POST':
         opc = request.POST.get('opc', None)
         if opc == 'Registrar Apoio':
@@ -84,7 +92,11 @@ def test(request):
             return HttpResponse(f'Sucesso! O cpf é: {ver_cpf}')
         else:
             return HttpResponse('Erro!')
-    return render(request, 'base/base.html')
+        
+
+    # Obtém o user_data da sessão, se existir
+    user_data = request.session.get('user_data', {})
+    return render(request, 'base/base.html', {'user_data': user_data})
 
 
 def reg(requests):
