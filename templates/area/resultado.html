@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resultado da Busca por CPF</title>
+</head>
+<body>
+    <h1>Resultado da Busca</h1>
+    {% if resultado %}
+        <table>
+            {% for chave, valor in resultado.items %}
+                <tr>
+                    <th>{{ chave }}</th>
+                    <td>{{ valor }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Nenhum resultado encontrado.</p>
+    {% endif %}
+</body>
+</html>

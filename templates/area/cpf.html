@@ -18,7 +18,7 @@
         <section class="search-form">
             <form method="POST" id="modernForm">{% csrf_token %}
                 <div class="input-field">
-                    <input type="text" id="nameSearch" placeholder="Digite o CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF deve estar no formato XXX.XXX.XXX-XX" required>
+                    <input type="text" name="cpf" id="nameSearch" placeholder="Digite o CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF deve estar no formato XXX.XXX.XXX-XX" required>
                     <label for="nameSearch">CPF</label>
                 </div>
                 <div class="form-actions">

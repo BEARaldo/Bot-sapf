@@ -3,12 +3,11 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
+from django.http import HttpResponse, HttpResponseRedirect
 from .services.sapf_connect import UserSession
 from .forms import LoginForm
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
-
+from .services.cpfAPI_connect import cpf_apiSession
+from django.views.decorators.csrf import csrf_exempt
 
 #
 from django.contrib.auth.models import User
@@ -83,22 +82,45 @@ def choice(request):
 
 
 # Verifica se o usuário está autenticado antes de chamar a função pagina1
+@csrf_exempt
 def test(request):
-    print(f"Usuário autenticado: {request.user.is_authenticated}")
     if request.method == 'POST':
-        opc = request.POST.get('opc', None)
-        if opc == 'Registrar Apoio':
-            ver_cpf = request.POST.get('cpf', None)
-            return HttpResponse(f'Sucesso! O cpf é: {ver_cpf}')
-        else:
-            return HttpResponse('Erro!')
-        
+        cpf = request.POST.get('cpf', '')  # Obtém o CPF do formulário
+        session = cpf_apiSession()  # Cria uma instância da sessão de API
+        resultado = session.consultar_cpf(cpf)  # Faz a busca pelo CPF
+        print(resultado)
+        # Ajuste o caminho para o template aqui
+        return render(request, 'area/resultado.html', {'resultado': resultado})
+    else:
+        print('n deu')
+        # Corrija este caminho também se necessário
+        return render(request, 'area/base.html')
+    # print(f"Usuário autenticado: {request.user.is_authenticated}")
+    # if request.method == 'POST':
+    #     opc = request.POST.get('opc', None)
+    #     if opc == 'Registrar Apoio':
+    #         ver_cpf = request.POST.get('cpf', None)
+    #         return HttpResponse(f'Sucesso! O cpf é: {ver_cpf}')
+    #     else:
+    #         return HttpResponse('Erro!')
+
 
     # Obtém o user_data da sessão, se existir
     user_data = request.session.get('user_data', {})
     return render(request, 'base/base.html', {'user_data': user_data})
 
 
+
 def reg(requests):
     return render(requests, 'registration/login.html')
+
+@csrf_exempt
+def return_cpf (request):
+    if request.method == 'POST':
+        cpf = request.POST.get('cpf', '')  # Obtém o CPF do formulário
+        session = cpf_apiSession()  # Cria uma instância da sessão de API
+        resultado = session.consultar_cpf(cpf)  # Faz a busca pelo CPF
+        print(resultado)
+        # Ajuste o caminho para o template aqui
+        return render(request, 'area/resultado.html', {'resultado': resultado})
 
