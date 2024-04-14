@@ -8,6 +8,7 @@ from .services.sapf_connect import UserSession
 from .forms import LoginForm
 from .services.cpfAPI_connect import cpf_apiSession
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import redirect
 
 #
 from django.contrib.auth.models import User
@@ -65,25 +66,15 @@ def logout_view(request):
 
 # Verifica se o usuário está autenticado antes de chamar a função pagina1
 
-def choice(request):
-    user_data = request.session.get('user_data', {})  # Obtém o user_data da sessão, se existir
 
-    if request.method == 'POST':
-        opcao = request.POST.get('opcao', None)
-        if opcao == 'cpf':
-            return render(request, 'base/base.html', {'user_data': user_data})
-        elif opcao == 'nome':
-            return render(request, 'area/nome.html', {'user_data': user_data})
-    
-    # Se não for um POST ou se a opção não for 'cpf' ou 'nome', renderiza 'area/choice.html' com user_data
-    return render(request, 'area/choice.html', {'user_data': user_data})
 
 
 
 
 # Verifica se o usuário está autenticado antes de chamar a função pagina1
-@csrf_exempt
-def test(request):
+
+def choice(request):
+    user_data = request.session.get('user_data', {})  # Obtém o user_data da sessão, se existir
     if request.method == 'POST':
         cpf = request.POST.get('cpf', '')  # Obtém o CPF do formulário
         session = cpf_apiSession()  # Cria uma instância da sessão de API
@@ -94,7 +85,7 @@ def test(request):
     else:
         print('n deu')
         # Corrija este caminho também se necessário
-        return render(request, 'area/base.html')
+        return render(request, 'base/base.html', {'user_data': user_data})
     # print(f"Usuário autenticado: {request.user.is_authenticated}")
     # if request.method == 'POST':
     #     opc = request.POST.get('opc', None)

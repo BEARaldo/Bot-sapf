@@ -11,12 +11,18 @@
     body{
         margin: 0;
         padding: 0;
+        background-color: #333 !important;
+    }
+    #hr {
+        border: none;
+        border-top: 1px solid #555555;
+        margin: 20px 0;
     }
     #barra{
         text-align: center !important;
         overflow: hidden !important;
         background-color: antiquewhite !important;
-        background-color: #008000 !important; 
+        background-color: #333 !important;
         color: white !important;
     }
     #nabar{
@@ -31,14 +37,43 @@
         font-weight: bold;
         color: white;
         font-size: 13px;
-}
+        box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+        backdrop-filter: blur(10px);
+        border: 3px solid rgba(255, 255, 255, 0.1);
+    }
+    #footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+    }
 
+
+    #ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    #li {
+        display: inline-block;
+        margin: 0 10px;
+    }
+
+    #a {
+        color: #fff;
+        text-decoration: none;
+    }
     </style>
 </head>
 <body>
 
     <div id="barra">
         <h1>Consulta de Apoio</h1>
+        <hr id="hr">
     </div>
 
     <div id="content">
@@ -52,6 +87,19 @@
     {% block content %}
 
     {% endblock %}
+
+<footer id="footer">
+    <hr id="hr">
+    <p>&copy; 2024 - Todos os direitos reservados</p>
+    <nav>
+        <ul id="ul">
+            <li id="li"><a id="a" href="#">Termos de uso</a></li>
+            <li id="li"><a id="a" href="#">Política de privacidade</a></li>
+            <li id="li"><a id="a" href="#">Sobre nós</a></li>
+            <li id="li"><a id="a" href="#">Contato</a></li>
+        </ul>
+    </nav>
+</footer>
 
 </body>
 </html>
