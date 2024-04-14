@@ -1,3 +1,6 @@
+{% extends 'padrao/padrao.html' %}
+{% block content %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -11,14 +14,17 @@
             margin: 0;
             padding: 0;
         }
+        .navbar {
+            background-color: #008000; /* Cor verde */
+            color: #FFFFFF; /* Cor branca */
+            text-align: center;
+            padding: 10px;
+        }
         .container {
             width: 80%;
             margin: 0 auto;
             text-align: center;
             padding-top: 50px;
-        }
-        h1 {
-            color: #008000; /* Cor verde */
         }
         input[type="text"] {
             width: 300px;
@@ -43,16 +49,20 @@
     </style>
 </head>
 <body>
-    <div class="container">
+    
+    
+    <div class="navbar">
         <h1>Consulta de Apoio</h1>
+    </div>
+    <div class="container">
         <form action="{% url 'test' %}" method="POST">
             {% csrf_token %}
             <input type="text" name="cpf" placeholder="Digite seu CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="CPF deve estar no formato XXX.XXX.XXX-XX" required>
             <input type="hidden" name="opc" value="Registrar Apoio">
             <input type="submit" value="Registrar Apoio">
         </form>
-        
-        
     </div>
+
 </body>
 </html>
+{% endblock %}

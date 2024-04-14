@@ -3,8 +3,7 @@ from . import views, settings
 
 
 urlpatterns = [
-    path('login/',views.login_view, name='login_view'),
-    path ('', views.home, name="home"),
+    path('',views.login_view, name='login_view'),
     #pagina1 é o mesmo html da rota login/
     path('pagina1/', views.pagina1, name="pagina1"),
     path('accounts/', include('django.contrib.auth.urls')),

@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #333; /* Cor escura para a navbar */
+    color: white; /* Cor do texto na navbar */
+    padding: 10px;
+    text-align: center;
+}
+
+.navbar h1 {
+    margin: 0;
+}
+
+#geral{
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background-color: rgb(25, 23, 44);
+    color: white;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+/* resultado.css */
+

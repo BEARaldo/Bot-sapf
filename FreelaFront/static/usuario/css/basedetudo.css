@@ -1,0 +1,12 @@
+#nabar{
+    position: relative;
+    margin-top: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+    float: right;
+    min-width: 200px;
+    margin-right: 1px;
+    border-radius: 10px;
+    background-color: rgb(25, 23, 44);
+    font-weight: bold;
+}

@@ -6,23 +6,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'usuario/css/styles.css' %}">
+   
+    <link rel="stylesheet" href="{% static 'usuario/css/basedetudo.css' %}">
 </head>
 <body>
-    <div id="nabar">
-        <p>Nome: {{ user_data.name }}</p>
-        <p>Nº Título: {{ user_data.titulo }}</p>
-        <p>Partido: {{ user_data.partido }}</p>
-    
+    <div id="content">
+        <div id="nabar">
+            <p>Nome: {{ user_data.name }}</p>
+            <p>Nº Título: {{ user_data.titulo }}</p>
+            <p>Partido: {{ user_data.partido }}</p>
+        </div>
     </div>
-    {% block conteudo %}
-
-    
+    <br>
+    {% block content %}
 
     {% endblock %}
 
-
 </body>
 </html>
+
+
 
 

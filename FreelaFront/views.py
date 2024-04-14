@@ -116,11 +116,12 @@ def reg(requests):
 
 @csrf_exempt
 def return_cpf (request):
+    user_data = request.session.get('user_data', {}) 
     if request.method == 'POST':
         cpf = request.POST.get('cpf', '')  # Obtém o CPF do formulário
         session = cpf_apiSession()  # Cria uma instância da sessão de API
         resultado = session.consultar_cpf(cpf)  # Faz a busca pelo CPF
         print(resultado)
         # Ajuste o caminho para o template aqui
-        return render(request, 'area/resultado.html', {'resultado': resultado})
+        return render(request, 'area/resultado.html', {'resultado': resultado, 'cpf': cpf, 'user_data': user_data})
 
