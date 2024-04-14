@@ -1,10 +1,18 @@
-
-
-
-
 {% extends 'padrao/padrao.html' %}
-{% block conteudo %}
 
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usuario/css/padrao.css' %}">
+</head>
+<body>
+<div id="content">
+  
+<br><br>
 <div id="quadrado">
     <form method="post">{% csrf_token %}
         <h3>Escolha como buscar a Pessoa</h3>
@@ -16,4 +24,7 @@
       </form>
 </div>
 
+
+</body>
+</html>
 {% endblock %}
