@@ -6,10 +6,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   
-    <link rel="stylesheet" href="{% static 'usuario/css/basedetudo.css' %}">
+    
+    <style>
+    body{
+        margin: 0;
+        padding: 0;
+    }
+    #barra{
+        text-align: center !important;
+        overflow: hidden !important;
+        background-color: antiquewhite !important;
+        background-color: #008000 !important; 
+        color: white !important;
+    }
+    #nabar{
+        margin-top: 6px !important;
+        padding-right: 10px !important;
+        padding-left: 10px !important;
+        float: right !important;
+        min-width: 200px !important;
+        margin-right: 6px;
+        border-radius: 10px;
+        background-color: rgb(25, 23, 44);
+        font-weight: bold;
+        color: white;
+        font-size: 13px;
+}
+
+    </style>
 </head>
 <body>
+
+    <div id="barra">
+        <h1>Consulta de Apoio</h1>
+    </div>
+
     <div id="content">
         <div id="nabar">
             <p>Nome: {{ user_data.name }}</p>
@@ -17,7 +48,7 @@
             <p>Partido: {{ user_data.partido }}</p>
         </div>
     </div>
-    <br>
+    
     {% block content %}
 
     {% endblock %}

@@ -14,17 +14,12 @@
             margin: 0;
             padding: 0;
         }
-        .navbar {
-            background-color: #008000; /* Cor verde */
-            color: #FFFFFF; /* Cor branca */
-            text-align: center;
-            padding: 10px;
-        }
+        
         .container {
             width: 80%;
             margin: 0 auto;
             text-align: center;
-            padding-top: 50px;
+            padding-top: 130px;
         }
         input[type="text"] {
             width: 300px;
@@ -51,9 +46,7 @@
 <body>
     
     
-    <div class="navbar">
-        <h1>Consulta de Apoio</h1>
-    </div>
+   
     <div class="container">
         <form action="{% url 'test' %}" method="POST">
             {% csrf_token %}

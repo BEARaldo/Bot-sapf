@@ -4,14 +4,14 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.navbar {
-    background-color: #333; /* Cor escura para a navbar */
+#navbar {
+    background-color: #333 !important; /* Cor escura para a navbar */
     color: white; /* Cor do texto na navbar */
     padding: 10px;
     text-align: center;
 }
 
-.navbar h1 {
+#navbar h1 {
     margin: 0;
 }
 
@@ -26,6 +26,3 @@ body {
     border-radius: 30px;
     padding: 20px;
 }
-
-/* resultado.css */
-
