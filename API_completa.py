@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 
 class ConsultaTituloEleitoral:
-    # O código da classe ConsultaTituloEleitoral permanece inalterado, exceto pelo método extract_details.
 
     def extract_details(self):
         if not self.validate_response():
@@ -15,15 +14,13 @@ class ConsultaTituloEleitoral:
             extracted = {
                 'nome': item.get('nome', ''),
                 'titulo_eleitoral': item.get('titulo_eleitoral', ''),
-                'zona': item.get('zona', '')  # Adicionando a zona eleitoral
+                'zona': item.get('zona', '') 
             }
             results.append(extracted)
 
         return results
 
 class cpf_apiSession:
-    # O código da classe cpf_apiSession permanece inalterado, exceto no método consultar_cpf.
-
     def consultar_cpf(self, cpf):
         payload_cpf = {
             "key-select": "cpf",
@@ -39,7 +36,6 @@ class cpf_apiSession:
         if 'erros' not in response_post.text:
             dados = self.capturar_dados(response_post.text)
 
-            # Consulta o título eleitoral
             consulta = ConsultaTituloEleitoral(token="tokken")  # Substitua "tokken" pelo seu token real
             consulta.execute(
                 query['birthdate'], query['mother'], query['name']
@@ -47,7 +43,6 @@ class cpf_apiSession:
             details = consulta.extract_details()
 
             if details is not None:
-                # Adiciona o título eleitoral e a zona eleitoral aos dados
                 dados['Título Eleitoral'] = details[0]['titulo_eleitoral']
                 dados['Zona Eleitoral'] = details[0]['zona']
 
