@@ -10,8 +10,8 @@
         body{
             font-family: Arial, Helvetica, sans-serif;
             background-color: #eaeaea;
-            margin: 0; /* Remove margin for body */
-            padding: 0; /* Remove padding for body */
+            margin: 0; 
+            padding: 0; 
         }
         #nav{
             background-color: rgb(25, 23, 44) !important;
@@ -28,7 +28,7 @@
             padding: 18px;
             width: 400px;
             border-width: 8px;
-            background-color: white; /* Add background color */
+            background-color: white; 
             z-index: 1; /* Ensure login div is above info div */
         }
         #login h1{
@@ -36,14 +36,13 @@
         }
         #info {
             position: absolute;
-            top: 79%; /* Adjust this value as needed */
+            top: 80%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 70%; /* Adjust width as needed */
-            padding: 10px;
-            border: 1px solid #ddd; /* Add border for clarity */
-            box-shadow: 0 5px 8px rgba(0,0,0,0.2); /* Add shadow for depth */
-            z-index: 0; /* Ensure info div is below login div */
+            width: 70%; 
+            padding: 0.5%;
+            border: 1px solid #ddd; 
+            box-shadow: 0 5px 8px rgba(0,0,0,0.2); 
         }
         #h6{
             
@@ -53,8 +52,37 @@
             color: black;
         }
         #ver_senha{
-            margin-left: 10px;
-            margin-top: 12px;
+            margin-bottom: 5%;
+            margin-left: 4px;
+        }
+        .form-control{
+            margin-bottom: 2%;
+            border: solid 0.1px black;
+        }
+        #login button {
+            display: block;
+            margin: 0 auto;
+            margin-top: 10px;
+        }
+        #login button:hover {
+            transform: scale(1.1); 
+        }
+
+        @media only screen and (max-width: 768px) {
+            #info {
+                margin-top: -2%;
+                font-size: 12px;
+            }
+            #info h6{
+                font-size: 12px;
+            }
+            #login{
+                margin-top: -3%;
+                width: 60%;
+            }
+            #novaSenha{
+                font-size: 14px;
+            }
         }
         
     </style>
@@ -71,16 +99,26 @@
     <div id="login">
         <h1>Login</h1>
         
-        <form method="POST" class="form login">{% csrf_token %}
+        <form method="POST" id="form_login" class="form login">{% csrf_token %}
             <input type="text" class="form-control" name="titulo_eleitor" id="cpf" placeholder="Título de Eleitor" required>
-            <br>
             <input type="password" class="form-control" name="password" id="password" placeholder="Senha" required>
-            <input id="ver_senha" type="checkbox" onclick="togglePasswordVisibility()"> ver senha
-            <br><br>
-            <button id="botao">Logar</button>
+            
+            <!--Div de redefinição de senha do site do tse-->
+                <div>
+                    <a style="float: right;" id="novaSenha" href="https://sapf.tse.jus.br/sapf/envioNovaSenha" target="_blank";>Esqueci minha senha</a>
+                </div>
+
+            
+                    <input  id="ver_senha" type="checkbox" onclick="togglePasswordVisibility()"> ver senha
+
+                    <br>
+
+                    <button id="botao">Logar</button>
+            
+
         </form>
     </div>
-    
+
     <div id="info">
         <p>Instruções de uso: Após cumprimento do disposto no § 3º do art. 10 da Resolução-TSE nº 23.465/2015, o representante legal da agremiação
             em formação, para obtenção de senha de acesso ao SAPF, deve encaminhar requerimento ao TSE, por meio do Protocolo Judiciário, na Sala
