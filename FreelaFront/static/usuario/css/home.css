@@ -1,32 +1,49 @@
 body{
-    background-color: rgb(242, 242, 242);
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fdfdfd !important;
+    margin: 0; /* Remove margin     for body */
+    padding: 0; /* Remove padding for body */
 }
-#login {
-    background-color: #ffffff; 
-    color: #333; 
-    padding: 70px; 
-    text-align: center; 
-    border-radius: 25px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+.card-body{
+    border-style: double !important;/
+}
+.a{
+    background-color: #fdfdfd !important;
+    border: none !important;
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -60%);
+    left: 40%;
+    top: -4%;
 }
 
-#login p {
-    font-size: 1.5em; 
-    margin-bottom: 10px; /* Espaçamento inferior */
+#nav{
+    background-color: rgb(25, 23, 44) !important;
 }
-
-#login a {
-    background-color: #007bff; 
+#nav a{
     color: white;
-    text-decoration: none; 
-    padding: 10px 20px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
 }
 
-#login a:hover {
-    background-color: #0056b3; 
+.info {
+    height: 95% !important;
+    padding: 2.1px;
+    border: 2px solid #ddd;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+.info p{
+    padding: 0 20px;
+} 
+.info li{
+    margin-left: 20px;
+}
+
+#a_senha {
+    color: black;
+}
+
+#ver_senha{
+    margin-left: 10px;
+    margin-top: 12px;
+}
+.form.login button {
+    display: block;
+    margin: 0 auto;
 }
