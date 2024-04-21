@@ -50,21 +50,21 @@ class ConsultaTituloEleitoral:
 
 
 # Uso da classe
-consulta = ConsultaTituloEleitoral(
-    token="TfOKDyyD-wrvUmN9o5yPzRq3rDGg_UiY4sJ8GRGg"
-)
+#consulta = ConsultaTituloEleitoral(
+#    token="TfOKDyyD-wrvUmN9o5yPzRq3rDGg_UiY4sJ8GRGg"
+#)
 
-query = {'birthdate' : "1997-07-02",
-'mother' : "cleonice maria de castro",
-'name' : "geraldo pereira de castro junior"}
+#query = {'birthdate' : "1997-07-02",
+#'mother' : "cleonice maria de castro",
+#'name' : "geraldo pereira de castro junior"}
 
-consulta.execute(
-    query['birthdate'], query['mother'], query['name']
-)
+#consulta.execute(
+#    query['birthdate'], query['mother'], query['name']
+#)
 
-details = consulta.extract_details()
+#details = consulta.extract_details()
 
-if details is not None:
-    print("Detalhes extraídos:", details)
-else:
-    print("Falha ao extrair detalhes ou consulta não bem-sucedida.")
+#if details is not None:
+#    print("Detalhes extraídos:", details)
+#else:
+#    print("Falha ao extrair detalhes ou consulta não bem-sucedida.")
