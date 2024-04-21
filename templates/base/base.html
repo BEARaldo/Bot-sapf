@@ -39,7 +39,7 @@
 
     <div id="login">
         <h1>Consulta ao CPF</h1>
-    <form action="{% url 'test' %}" method="POST">{% csrf_token %}
+    <form action="{% url 'choice' %}" method="POST">{% csrf_token %}
         <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
         <input type="hidden" name="opc" value="Registrar Apoio">
         
