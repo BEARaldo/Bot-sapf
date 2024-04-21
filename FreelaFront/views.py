@@ -1,118 +1,86 @@
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout
-from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect, reverse
+from django.views.generic import FormView
 from .services.sapf_connect import UserSession
-from .forms import LoginForm
-from .services.cpfAPI_connect import cpf_apiSession
-from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import redirect
+from .services.tituloEleitoral_connect import ConsultaTituloEleitoral
+from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.contrib.auth import logout
+from django.views.generic import TemplateView, RedirectView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
-#
+from .forms import LoginForm
+from .services import cpfAPI_connect
+from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 
 
-def home(requests):
-    return render(requests, 'core/home.html')
-
-#Verifica se o usuário está autenticado antes de chamar a função login2
-@login_required
-def login2(requests):
-    return render(requests, 'registration/login.html')
-
-#Verifica se o usuário está autenticado antes de chamar a função pagina1
-@login_required
-def pagina1(requests):
-    return render(requests, 'core/pagina1.html')
 
 
-def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)  # Cria uma instância do LoginForm com os dados enviados
-        if form.is_valid():
-            # Extrai o título de eleitor e senha validados do formulário
-            titulo_eleitor = form.cleaned_data['titulo_eleitor']
-            password = form.cleaned_data['password']
+class HomeView(LoginRequiredMixin, TemplateView):
+    template_name = 'core/home.html'
 
-            # Utiliza os dados validados para tentar fazer o login
-            user_session = UserSession()
-            if user_session.login_user(titulo_eleitor, password):
-                # Armazena informações do usuário na sessão do Django, se necessário
-                request.session['user_data'] = user_session.user_data
-                return redirect('choice')  # Redireciona para a página inicial após o login bem-sucedido
-            else:
-                # Se os dados de login não forem válidos, adiciona uma mensagem de erro
-                messages.error(request, 'Usuário ou senha incorretos')
+class LoginView(FormView):
+    template_name = 'login.html'
+    form_class = LoginForm
+    success_url = '/choice/'  # Redirecionar para a URL desejada após o sucesso
+
+    def form_valid(self, form):
+        titulo_eleitor = form.cleaned_data['titulo_eleitor']
+        password = form.cleaned_data['password']
+        user_session = UserSession()
+        if user_session.login_user(titulo_eleitor, password):
+            self.request.session['user_data'] = user_session.user_data
+            return super().form_valid(form)
         else:
-            # Se o formulário não for válido, mantém o usuário na página de login e mostra erros de validação
-            messages.error(request, 'Por favor, corrija os erros abaixo.')
-    else:
-        # Se não for uma requisição POST, exibe o formulário de login vazio
-        form = LoginForm()
+            form.add_error(None, 'Seu título de eleitor ou senha está incorreto.')
+            return self.form_invalid(form)
 
-    # Obtém o user_data da sessão, se existir
-    user_data = request.session.get('user_data', {})
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
-    # Renderiza o template de login, passando o formulário como contexto
-    return render(request, 'login.html', {'form': form, 'user_data': user_data})
-
-def logout_view(request):
-    logout(request)
-    return redirect('home')  # Substitua 'home' pelo nome da sua URL da página inicial
+class LogoutView(LoginRequiredMixin, RedirectView):
+    url = reverse_lazy('home')
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return super().get(request, *args, **kwargs)
 
 
-# Verifica se o usuário está autenticado antes de chamar a função pagina1
+class ConsultaEleitoralView(View):
+    def get(self, request):
+        # Recupera variáveis da URL
+        consulta_dados = request.session.get('consulta_dados', {})
+        print(f"Eleitoral: {consulta_dados}")
+        nome = consulta_dados.get('nome')
+        nomeMae = consulta_dados.get('nomeMae')
+        dataNascimento = consulta_dados.get('dataNascimento')
 
+        if not all([nome, nomeMae, dataNascimento]):
+            return HttpResponseBadRequest("Todos os parâmetros (nome, cpf, título eleitoral) são obrigatórios.")
 
+        consultor = ConsultaTituloEleitoral('dPhltkwAeH77q-W9Qn5cstUB5vP6B7fOTfoplloa')
+        consultor.execute(dataNascimento, nomeMae, nome)
+        resultado = {'nome': nome,
+                     'cpf': consulta_dados.get('cpf'),
+                     'nTitulo': consultor.dados_recuperados['nTitulo'],
+                     'zona': consultor.dados_recuperados['zona']}
 
+        return render(request, 'test_diretorio/ficha_cidadao.html', {'resultado': resultado})
 
+class ConsultaCitizenView(View):
+    def post(self, request, *args, **kwargs):
+        cpf = request.POST.get('cpf', '')
 
+        session = cpfAPI_connect.cpf_apiSession()
+        request.session['consulta_dados'] = session.consultar_cpf(cpf)
+        # session['consulta_dados'] = dados
 
-# Verifica se o usuário está autenticado antes de chamar a função pagina1
+        return HttpResponseRedirect(reverse('consulta_eleitoral'))
 
-def choice(request):
-    user_data = request.session.get('user_data', {})  # Obtém o user_data da sessão, se existir
-    if request.method == 'POST':
-        cpf = request.POST.get('cpf', '')  # Obtém o CPF do formulário
-        session = cpf_apiSession()  # Cria uma instância da sessão de API
-        resultado = session.consultar_cpf(cpf)  # Faz a busca pelo CPF
-        print(resultado)
-        # Ajuste o caminho para o template aqui
-        return render(request, 'area/resultado.html', {'resultado': resultado})
-    else:
-        print('n deu')
-        # Corrija este caminho também se necessário
-        return render(request, 'base/base.html', {'user_data': user_data})
-    # print(f"Usuário autenticado: {request.user.is_authenticated}")
-    # if request.method == 'POST':
-    #     opc = request.POST.get('opc', None)
-    #     if opc == 'Registrar Apoio':
-    #         ver_cpf = request.POST.get('cpf', None)
-    #         return HttpResponse(f'Sucesso! O cpf é: {ver_cpf}')
-    #     else:
-    #         return HttpResponse('Erro!')
-
-
-    # Obtém o user_data da sessão, se existir
-    user_data = request.session.get('user_data', {})
-    return render(request, 'base/base.html', {'user_data': user_data})
-
-
+    def get(self, request, *args, **kwargs):
+        return render(request, 'base/base.html')
 
 def reg(requests):
     return render(requests, 'registration/login.html')
 
-@csrf_exempt
-def return_cpf (request):
-    user_data = request.session.get('user_data', {}) 
-    if request.method == 'POST':
-        cpf = request.POST.get('cpf', '')  # Obtém o CPF do formulário
-        session = cpf_apiSession()  # Cria uma instância da sessão de API
-        resultado = session.consultar_cpf(cpf)  # Faz a busca pelo CPF
-        print(resultado)
-        # Ajuste o caminho para o template aqui
-        return render(request, 'area/resultado.html', {'resultado': resultado, 'cpf': cpf, 'user_data': user_data})
 
