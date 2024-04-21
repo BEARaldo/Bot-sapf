@@ -130,15 +130,15 @@ def cpf_input_view(request):
         return render(request, 'area/input_form.html')
 
 def combined_api_view(request,cpf):
-        # cpf_session = cpf_apiSession(cpf)
-        # personal_data = cpf_session.get_personal_data()
+        cpf_session = cpf_apiSession(cpf)
+        personal_data = cpf_session.get_personal_data()
 
         # Utilize estes dados estáticos como alternativa para testes
-        personal_data = {
-            'Nome': 'geraldo pereira de castro junior',
-            'Nascimento': '1997-07-02',
-            'Nome da mãe': 'cleonice maria de castro'
-        }
+        # personal_data = {
+        #     'Nome': 'geraldo pereira de castro junior',
+        #     'Nascimento': '1997-07-02',
+        #     'Nome da mãe': 'cleonice maria de castro'
+        # }
 
         if personal_data:
             # Função para formatar a data
