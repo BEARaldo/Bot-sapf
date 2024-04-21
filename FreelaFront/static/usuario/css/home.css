@@ -1,0 +1,49 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #fdfdfd !important;
+    margin: 0; /* Remove margin     for body */
+    padding: 0; /* Remove padding for body */
+}
+.card-body{
+    border-style: double !important;/
+}
+.a{
+    background-color: #fdfdfd !important;
+    border: none !important;
+    position: absolute;
+    left: 40%;
+    top: -4%;
+}
+
+#nav{
+    background-color: rgb(25, 23, 44) !important;
+}
+#nav a{
+    color: white;
+}
+
+.info {
+    height: 95% !important;
+    padding: 2.1px;
+    border: 2px solid #ddd;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.2);
+}
+.info p{
+    padding: 0 20px;
+} 
+.info li{
+    margin-left: 20px;
+}
+
+#a_senha {
+    color: black;
+}
+
+#ver_senha{
+    margin-left: 10px;
+    margin-top: 12px;
+}
+.form.login button {
+    display: block;
+    margin: 0 auto;
+}

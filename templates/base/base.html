@@ -1,0 +1,62 @@
+{% extends 'padrao/padrao.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Apoio</title>
+    <style>
+        body {
+            background-color: #eaeaea !important;/* Cor de fundo branca */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        #login{
+            position: absolute;
+            top: 42%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-style: double;
+            padding: 18px;
+            width: 400px;
+            border-width: 8px;
+            background-color: white; /* Add background color */
+            z-index: 1; /* Ensure login div is above info div */
+        }
+        #login form{
+            text-align: center;
+        }
+        #login h1{
+            text-align: center;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div id="login">
+        <h1>Consulta ao CPF</h1>
+    <form action="{% url 'test' %}" method="POST">{% csrf_token %}
+        <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
+        <input type="hidden" name="opc" value="Registrar Apoio">
+        
+        <input type="submit" value="Buscar">
+    </form>
+</div>
+
+
+<script>
+    document.getElementById('cpfInput').addEventListener('input', function (e) {
+        var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres que não são dígitos
+        if (cpf.length > 0) {
+            cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        }
+        e.target.value = cpf;
+    });
+</script>
+</body>
+</html>
+{% endblock %}
