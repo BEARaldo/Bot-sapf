@@ -1,8 +1,10 @@
 import requests
 from bs4 import BeautifulSoup
+import logging
 
 class cpf_apiSession:
-    def __init__(self):
+    def __init__(self, cpf=None):
+        self.cpf = cpf
         self.base_url = 'https://deskdata.com.br/pessoas/'
         self.cookie_manual = {
             'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b': 'thihft%40gmail.com%7C1713780026%7Cndq1j1f1cltUZQcJsBU295xW2G3MOxUO1U0Eolk9FWu%7C139d26a84406f74f1e4c4e3ea50efe95880c829c8f9f427a681bb636784ccd8a'
@@ -38,6 +40,46 @@ class cpf_apiSession:
         else:
             return "Solicitação falhou. O CPF informado é invalido."
 
-if __name__ == '__main__':
-    client = cpf_apiSession()
-    # print(client.consultar_cpf(input("Digite o CPF:")))
+    def get_personal_data(self):
+        if not self.cpf:
+            logging.error("CPF not provided")
+            raise ValueError("CPF is required to fetch personal data.")
+
+        payload_cpf = {
+            "key-select": "cpf",
+            "cpf": self.cpf,
+            "key-extra-select": "",
+            "basic_data": "basic_data",
+            "search_type": "people",
+            "submit": "Consultar",
+            "duplicate-query-confirm": "false"
+        }
+
+        try:
+            response = requests.post(self.base_url, data=payload_cpf, cookies=self.cookie_manual)
+            logging.info(f"HTTP Response Status Code: {response.status_code}")
+            if response.status_code == 200:
+                soup = BeautifulSoup(response.content, 'html.parser')
+                dados_basicos = {}
+                tabela_dados_basicos = soup.find('table', class_='table-sm')
+                if tabela_dados_basicos:
+                    linhas = tabela_dados_basicos.find_all('tr')
+                    for linha in linhas:
+                        rotulo = linha.find('th').text.strip()
+                        dado = linha.find('td').text.strip()
+                        dados_basicos[rotulo] = dado
+                    logging.info(f"Extracted data: {dados_basicos}")
+                else:
+                    logging.warning("No table found in the HTML response")
+                return dados_basicos
+            else:
+                logging.error(f"Failed to fetch data from API with status {response.status_code}")
+                logging.error(f"Response content: {response.text}")
+                return None
+        except Exception as e:
+            logging.error(f"Exception during API request: {e}")
+            return None
+
+#if __name__ == '__main__':
+    #client = cpf_apiSession()
+    #print(client.consultar_cpf(input("Digite o CPF:")))

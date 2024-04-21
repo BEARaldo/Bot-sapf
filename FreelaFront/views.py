@@ -3,13 +3,15 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib import messages
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from .services.sapf_connect import UserSession
 from .forms import LoginForm
 from .services.cpfAPI_connect import cpf_apiSession
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import redirect
-
+from .services.cpfAPI_connect import cpf_apiSession
+from .services.test_infosimples import ConsultaTituloEleitoral
+from datetime import datetime
 #
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -116,3 +118,70 @@ def return_cpf (request):
         # Ajuste o caminho para o template aqui
         return render(request, 'area/resultado.html', {'resultado': resultado, 'cpf': cpf, 'user_data': user_data})
 
+
+def cpf_input_view(request):
+        if request.method == 'POST':
+            cpf = request.POST.get('cpf')
+            print("CPF received:", cpf)  # Verifica se o CPF está sendo recebido
+            if cpf:
+                return combined_api_view(request, cpf)
+            else:
+                return render(request, 'area/input_form.html', {'error': 'CPF is required'})
+        return render(request, 'area/input_form.html')
+
+def combined_api_view(request,cpf):
+        # cpf_session = cpf_apiSession(cpf)
+        # personal_data = cpf_session.get_personal_data()
+
+        # Utilize estes dados estáticos como alternativa para testes
+        personal_data = {
+            'Nome': 'geraldo pereira de castro junior',
+            'Nascimento': '1997-07-02',
+            'Nome da mãe': 'cleonice maria de castro'
+        }
+
+        if personal_data:
+            # Função para formatar a data
+            def format_date(date_str):
+                try:
+                    date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+                    return date_obj.strftime("%Y-%m-%d")
+                except ValueError:
+                    return date_str
+
+            mapped_data = {
+                'birthdate': format_date(personal_data.get('Nascimento')),
+                'mother': personal_data.get('Nome da mãe'),
+                'name': personal_data.get('Nome')
+            }
+
+            print("Sending the following data to ConsultaTituloEleitoral:")
+            print(f"Name: {mapped_data['name']}")
+            print(f"Mother's Name: {mapped_data['mother']}")
+            print(f"Birthdate: {mapped_data['birthdate']}")
+
+            consulta = ConsultaTituloEleitoral(
+                token="TfOKDyyD-wrvUmN9o5yPzRq3rDGg_UiY4sJ8GRGg"
+            )
+
+            query = {'birthdate' : "1997-07-02",
+            'mother' : "cleonice maria de castro",
+            'name' : "geraldo pereira de castro junior"}
+
+            consulta.execute(
+                query['birthdate'], query['mother'], query['name']
+            )
+
+            details = consulta.extract_details()
+
+            if details is not None:
+                print("Detalhes extraídos:", details)
+            else:
+                print("Falha ao extrair detalhes ou consulta não bem-sucedida.")
+            if details:
+                print("Detalhes extraídos:", details)
+                combined_data = {**mapped_data, **details}
+                return JsonResponse(combined_data, safe=False)
+            else:
+                print("Falha ao extrair detalhes ou consulta não bem-sucedida.")
+                return JsonResponse({"error": "Failed to retrieve electoral data"}, status=400)

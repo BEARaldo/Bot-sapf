@@ -12,6 +12,8 @@ urlpatterns = [
     #path('test/', views.test, name='test'),
 
     path('reg/', views.reg, name='reg'),
+    path('input-cpf/', views.cpf_input_view, name='cpf-input'),
+    path('api/combined-data/', views.combined_api_view, name='combined-api-data'),
     path('return_cpf/', views.return_cpf, name='test')
 
 

@@ -1,0 +1,10 @@
+
+<form method="post">
+    {% csrf_token %}
+    <label for="cpf">CPF:</label>
+    <input type="text" id="cpf" name="cpf" required>
+    <button type="submit">Pesquisar</button>
+</form>
+{% if error %}
+<p>{{ error }}</p>
+{% endif %}
