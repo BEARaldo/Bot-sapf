@@ -1,15 +1,18 @@
+import datetime
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import FormView
 from .services.sapf_connect import UserSession
 from .services.tituloEleitoral_connect import ConsultaTituloEleitoral
-from django.http import HttpResponseBadRequest, HttpResponseRedirect
+from django.http import HttpResponseBadRequest, HttpResponseRedirect, HttpResponse
 from django.contrib.auth import logout
 from django.views.generic import TemplateView, RedirectView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-
+from django.conf import settings
+import os
 from .forms import LoginForm
 from .services import cpfAPI_connect
+from .services import  generatePdf
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
@@ -30,7 +33,7 @@ class LoginView(FormView):
         password = form.cleaned_data['password']
         user_session = UserSession()
         if user_session.login_user(titulo_eleitor, password):
-            self.request.session['user_data'] = user_session.user_data
+            request.session['user_data'] = user_session.user_data
             return super().form_valid(form)
         else:
             form.add_error(None, 'Seu título de eleitor ou senha está incorreto.')
@@ -60,13 +63,40 @@ class ConsultaEleitoralView(View):
 
         consultor = ConsultaTituloEleitoral('dPhltkwAeH77q-W9Qn5cstUB5vP6B7fOTfoplloa')
         consultor.execute(dataNascimento, nomeMae, nome)
-        resultado = {'nome': nome,
+        dados_logados = request.session.get('user_data',{})
+        print(dados_logados)
+        self.resultado = {'nome': nome,
                      'cpf': consulta_dados.get('cpf'),
                      'nTitulo': consultor.dados_recuperados['nTitulo'],
                      'zona': consultor.dados_recuperados['zona']}
+        pdf_path = self.pdf_generate()
+        # pdf_path = self.pdf_generate()
+        with open(pdf_path, 'rb') as pdf:
+            response = HttpResponse(pdf.read(), content_type='application/pdf')
+            response['Content-Disposition'] = 'inline; filename="some_filename.pdf"'
+            return response
 
-        return render(request, 'test_diretorio/ficha_cidadao.html', {'resultado': resultado})
+    def pdf_generate(self, ):
 
+
+
+        dados = {'nome': self.resultado['nome'],
+                 'data_d': datetime.date.today().day,
+                 'data_m': datetime.date.today().month,
+                 'data_a': datetime.date.today().year,
+                 'titulo': self.resultado['nTitulo'],
+                 'zona': self.resultado['zona'],
+                 'titulo_coletor': 'n logado no SAPF',
+                 'nome_coletor': 'nome logado no SAPF'}
+        # dados = {'nome': 'Geraldo Pereira De Castro Junior', 'data1': '22', 'data2': '33', 'data3': '4444',
+        #  'titulo': '025239362089', 'zona': 'DF 005'}
+
+        print(f"pdf daodos {dados}")
+        input_pdf_path = os.path.join(settings.MEDIA_ROOT, '', 'ficha_apoio.pdf')
+        output_pdf_path = os.path.join(settings.MEDIA_ROOT, f'pdfs/{dados["titulo_coletor"]}')
+        os.makedirs(output_pdf_path, exist_ok=True)
+        out_file = generatePdf.fill_form(input_pdf_path, dados, output_pdf_path + f'/{dados["titulo"]}.pdf')
+        return out_file
 class ConsultaCitizenView(View):
     def post(self, request, *args, **kwargs):
         cpf = request.POST.get('cpf', '')

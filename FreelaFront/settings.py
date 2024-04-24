@@ -14,7 +14,7 @@ SECRET_KEY = "django-insecure-q&b=kb&n!8mfr92t25@$=&!*$z$6l!fuhg3!yizpjk#&7auaov
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -108,10 +108,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# settings.py
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Para onde o 'collectstatic' vai copiar os arquivos
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'FreelaFront', 'static'),]  # Seus diretórios de desenvolvimento
+
+MEDIA_URL = '/FreelaFront/static/media/'
+# MEDIA_URL = '/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, './FreelaFront/static/media/')  # Onde os arquivos de mídia são armazenados
 
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
