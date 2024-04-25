@@ -128,4 +128,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, './FreelaFront/static/media/')  # Onde os ar
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGOUT_REDIRECT_URL = 'login_view'
-LOGIN_REDIRECT_URL = 'choice'
+LOGIN_REDIRECT_URL = 'consultar_cpf'

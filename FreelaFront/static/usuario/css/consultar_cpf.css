@@ -1,0 +1,24 @@
+body {
+    background-color: #eaeaea !important;/* Cor de fundo branca */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+#login{
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-style: double;
+    padding: 18px;
+    width: 400px;
+    border-width: 8px;
+    background-color: white; /* Add background color */
+    z-index: 1; /* Ensure login div is above info div */
+}
+#login form{
+    text-align: center;
+}
+#login h1{
+    text-align: center;
+}

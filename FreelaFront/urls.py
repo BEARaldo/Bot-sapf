@@ -7,10 +7,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('', LoginView.as_view(), name='login_view'),
-    path('login/', LoginView.as_view(), name='login_view'),
-    path('home/', HomeView.as_view(), name='home'),
+    path('consultar_cpf/', ConsultaCitizenView.as_view(), name='consultar_cpf'),
     path('logout/', LogoutView.as_view(), name='logout'),
-    path('choice/', ConsultaCitizenView.as_view(), name='choice'),
     path('consulta_eleitoral/', ConsultaEleitoralView.as_view(), name='consulta_eleitoral'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

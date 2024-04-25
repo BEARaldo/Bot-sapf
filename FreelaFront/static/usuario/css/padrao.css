@@ -1,18 +1,22 @@
+body{
+    margin: 0;
+    padding: 0;
+}
 #hr {
     border: none;
     border-top: 1px solid #555555;
     margin: 20px 0;
 }
-#barra {
+#barra{
     background-color: rgb(25, 23, 44) !important;
 }
-#barra a {
+#barra a{
     color: white;
 }
-#content {
+#content{
     margin-right: 5px;
 }
-#nabar {
+#nabar{
     margin-top: 6px !important;
     padding-top: 10px;
     padding-right: 10px !important;
@@ -36,35 +40,24 @@
     background-color: #333;
     color: #fff;
     text-align: center;
-    padding: 10px 0;
+    
 }
-#footer p {
+#footer p{
     margin-top: 1%;
 }
+
 #ul {
     list-style: none;
     padding: 0;
     margin: 0;
 }
+
 #li {
     display: inline-block;
     margin: 0 10px;
 }
+
 #a {
     color: #fff;
-}
-.content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60%;
-    
-}
-
-td{
-    text-align: center;
-}
-body {
-    padding-bottom: 60px; /* Altura do footer */
+    text-decoration: none;
 }

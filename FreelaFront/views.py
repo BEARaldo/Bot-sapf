@@ -20,13 +20,12 @@ from django.contrib.auth import authenticate
 
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
-    template_name = 'core/home.html'
+
 
 class LoginView(FormView):
     template_name = 'login.html'
     form_class = LoginForm
-    success_url = '/choice/'  # Redirecionar para a URL desejada após o sucesso
+    success_url = '/consultar_cpf/'  # Redirecionar para a URL desejada após o sucesso
 
     def form_valid(self, form):
         titulo_eleitor = form.cleaned_data['titulo_eleitor']
@@ -43,7 +42,7 @@ class LoginView(FormView):
         return super().form_invalid(form)
 
 class LogoutView(LoginRequiredMixin, RedirectView):
-    url = reverse_lazy('home')
+    url = reverse_lazy('login_view')
     def get(self, request, *args, **kwargs):
         logout(request)
         return super().get(request, *args, **kwargs)
@@ -108,9 +107,8 @@ class ConsultaCitizenView(View):
         return HttpResponseRedirect(reverse('consulta_eleitoral'))
 
     def get(self, request, *args, **kwargs):
-        return render(request, 'base/base.html')
+        return render(request, 'area/consultar_cpf.html')
 
-def reg(requests):
-    return render(requests, 'registration/login.html')
+
 
 
