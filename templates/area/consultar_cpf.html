@@ -10,27 +10,37 @@
     <title>Consulta de Apoio</title>
 </head>
 <body>
-
     <div id="login">
         <h1>Consulta ao CPF</h1>
-    <form action="{% url 'consultar_cpf' %}" method="POST">{% csrf_token %}
-        <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
-        <input type="hidden" name="opc" value="Registrar Apoio">
-        
-        <input type="submit" value="Buscar">
-    </form>
-</div>
+        <form action="{% url 'consultar_cpf' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
+            <input type="hidden" name="opc" value="Registrar Apoio">
+            <input type="submit" value="Buscar">
+        </form>
+    </div>
+
+    <!--Tela de carregamento que será exibido após buscar o cpf-->
+    <div id="tudo">
+        <div id="loader"></div>
+        <div id="loading-text">Aguarde, o seu PDF está sendo gerado<span class="dots">...</span></div>
+    </div>
 
 
-<script>
-    document.getElementById('cpfInput').addEventListener('input', function (e) {
-        var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres que não são dígitos
-        if (cpf.length > 0) {
-            cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-        }
-        e.target.value = cpf;
-    });
-</script>
+    <script>
+        document.getElementById('cpfInput').addEventListener('input', function (e) {
+            var cpf = e.target.value.replace(/\D/g, '');
+            if (cpf.length > 0) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+            }
+            e.target.value = cpf;
+        });
+
+        document.querySelector('form').addEventListener('submit', function () {
+            document.getElementById('tudo').style.display = 'block';
+        });
+    </script>
+    
 </body>
 </html>
 {% endblock %}
