@@ -20,10 +20,14 @@
             <p>Partido: {{ user_data.partido }}</p>
         </div>
     </div>
+        <div style="width: 50%; height: 450px; border: solid 3px rgb(25, 23, 44); margin-left: 25%;">
+            <embed src="{% url 'serve_pdf' filename=resultado %}" type="application/pdf" width="100%" height="600px" />
+        </div>
     <div>
-        <iframe id="visu_pdf" src="{% load resultado %}" style="width: 50%; height: 450px; border: solid 3px rgb(25, 23, 44); margin-left: 25%;" frameborder="0"></iframe>
-    </div>
-    
+    <p>Debug PDF Path: {{ resultado }}</p>
+    <embed src="{{ resultado }}" type="application/pdf" width="100%" height="450px">
+</div>
+
     <div id="apoio">
     <button  type="button" class="btn btn-success">Cadastrar Apoio</button>
     </div>

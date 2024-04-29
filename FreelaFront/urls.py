@@ -11,6 +11,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('consulta_eleitoral/', ConsultaEleitoralView.as_view(), name='consulta_eleitoral'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('pdfs/<path:filename>', views.ServePDF.as_view(), name='serve_pdf'),
 ]
 
 if settings.DEBUG:

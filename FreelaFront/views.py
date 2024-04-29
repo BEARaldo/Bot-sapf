@@ -53,28 +53,40 @@ class ConsultaEleitoralView(View):
         # Recupera variáveis da URL
         consulta_dados = request.session.get('consulta_dados', {})
         print(f"Eleitoral: {consulta_dados}")
-        nome = consulta_dados.get('nome')
-        nomeMae = consulta_dados.get('nomeMae')
-        dataNascimento = consulta_dados.get('dataNascimento')
+        nome = consulta_dados.get('Nome')
+        nomeMae = consulta_dados.get('Nome da mãe')
+        dataNascimento = consulta_dados.get('Nascimento')
 
         if not all([nome, nomeMae, dataNascimento]):
             return HttpResponseBadRequest("Todos os parâmetros (nome, cpf, título eleitoral) são obrigatórios.")
 
-        consultor = ConsultaTituloEleitoral('dPhltkwAeH77q-W9Qn5cstUB5vP6B7fOTfoplloa')
-        consultor.execute(dataNascimento, nomeMae, nome)
+        consultor = ConsultaTituloEleitoral("VDRfLIYiiFqEy39v9fr6Q6c-1x4qyUTxzyhVdiIk")
+        self.dados_eleitorais = consultor.execute(dataNascimento, nomeMae, nome)
         dados_logados = request.session.get('user_data',{})
         print(dados_logados)
         self.resultado = {'nome': nome,
                      'cpf': consulta_dados.get('cpf'),
-                     'nTitulo': consultor.dados_recuperados['nTitulo'],
-                     'zona': consultor.dados_recuperados['zona']}
-        pdf_path = self.pdf_generate()
-        # pdf_path = self.pdf_generate()
-        with open(pdf_path, 'rb') as pdf:
-            response = HttpResponse(pdf.read(), content_type='application/pdf')
-            response['Content-Disposition'] = 'inline; filename="some_filename.pdf"'
-            return response
+                     'nTitulo': self.dados_eleitorais ['nTitulo'],
+                     'zona': self.dados_eleitorais ['zona']}
 
+        pdf_path = self.pdf_generate()
+        pdf_path = pdf_path.replace(settings.MEDIA_ROOT, settings.MEDIA_URL)
+        # with open(pdf_path, 'rb') as pdf:
+        #     response = HttpResponse(pdf.read(), content_type='application/pdf')
+        #     response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path) + '"'
+        #     return response
+
+        return render(request, './test_diretorio/pdf.html', {'resultado': f"{self.resultado['nTitulo']}.pdf"})
+    def pdf_load(self, ):
+        pdf_path = os.path.join(settings.MEDIA_ROOT, 'n logado no SAPF')
+
+        if os.path.exists(pdf_path):
+            with open(pdf_path, 'rb') as pdf:
+                response = HttpResponse(pdf.read(), content_type='application/pdf')
+                response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path) + self.resultado['nTitulo']
+                return response
+        else:
+            return HttpResponseNotFound('The requested PDF was not found in our records.')
     def pdf_generate(self, ):
 
 
@@ -90,12 +102,23 @@ class ConsultaEleitoralView(View):
         # dados = {'nome': 'Geraldo Pereira De Castro Junior', 'data1': '22', 'data2': '33', 'data3': '4444',
         #  'titulo': '025239362089', 'zona': 'DF 005'}
 
-        print(f"pdf daodos {dados}")
+        print(f"pdf dados {dados}")
         input_pdf_path = os.path.join(settings.MEDIA_ROOT, '', 'ficha_apoio.pdf')
-        output_pdf_path = os.path.join(settings.MEDIA_ROOT, f'pdfs/{dados["titulo_coletor"]}')
+        output_pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdfs')
         os.makedirs(output_pdf_path, exist_ok=True)
         out_file = generatePdf.fill_form(input_pdf_path, dados, output_pdf_path + f'/{dados["titulo"]}.pdf')
         return out_file
+class ServePDF(View):
+    def get(self, request, filename):
+        pdf_path = os.path.join(settings.MEDIA_ROOT,'pdfs',filename)
+        print(pdf_path)
+        if os.path.exists(pdf_path):
+            with open(pdf_path, 'rb') as pdf:
+                response = HttpResponse(pdf.read(), content_type='application/pdf')
+                response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path)
+                return response
+        else:
+            return HttpResponseNotFound('The requested PDF was not found in our records.')
 class ConsultaCitizenView(View):
     def post(self, request, *args, **kwargs):
         cpf = request.POST.get('cpf', '')
