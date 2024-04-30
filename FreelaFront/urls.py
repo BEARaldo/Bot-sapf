@@ -5,6 +5,10 @@ from .views import *
 from django.conf import settings
 from django.conf.urls.static import static
 
+
+
+from django.contrib import admin
+
 urlpatterns = [
     path('', LoginView.as_view(), name='login_view'),
     path('consultar_cpf/', ConsultaCitizenView.as_view(), name='consultar_cpf'),
@@ -12,6 +16,9 @@ urlpatterns = [
     path('consulta_eleitoral/', ConsultaEleitoralView.as_view(), name='consulta_eleitoral'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('pdfs/<path:filename>', views.ServePDF.as_view(), name='serve_pdf'),
+
+
+    path('admin/', admin.site.urls),
 ]
 
 if settings.DEBUG:

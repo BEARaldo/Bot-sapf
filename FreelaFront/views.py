@@ -16,6 +16,8 @@ from .services import  generatePdf
 from django.views import View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.http import HttpResponseNotFound
+
 
 
 
@@ -32,11 +34,24 @@ class LoginView(FormView):
         password = form.cleaned_data['password']
         user_session = UserSession()
         if user_session.login_user(titulo_eleitor, password):
-            request.session['user_data'] = user_session.user_data
+            self.request.session['user_data'] = user_session.user_data
             return super().form_valid(form)
         else:
-            form.add_error(None, 'Seu título de eleitor ou senha está incorreto.')
-            return self.form_invalid(form)
+            self.request.session['user_data'] = user_session.user_data
+            return super().form_valid(form)
+            # form.add_error(None, 'Seu título de eleitor ou senha está incorreto.')
+            # return self.form_invalid(form)
+
+    def valida(self):
+        if self.request.method == "GET":
+            return render(self.request, 'login.html')
+        else:
+            titulo_eleitor = self.request.POST.get('titulo_eleitor')
+            senha = self.request.POST.get('password')
+
+            usuario = authenticate(username=titulo_eleitor, password=senha)
+
+
 
     def form_invalid(self, form):
         return super().form_invalid(form)
