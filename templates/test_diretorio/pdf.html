@@ -21,11 +21,10 @@
         </div>
     </div>
         <div style="width: 50%; height: 450px; border: solid 3px rgb(25, 23, 44); margin-left: 25%;">
-            <embed src="{% url 'serve_pdf' filename=resultado %}" type="application/pdf" width="100%" height="600px" />
+            <embed src="{{ MEDIA_URL }}{{ resultado }}" type="application/pdf" width="100%" height="100%">
         </div>
     <div>
-    <p>Debug PDF Path: {{ resultado }}</p>
-    <embed src="{{ resultado }}" type="application/pdf" width="100%" height="450px">
+    <p>Debug PDF Path: "{{ MEDIA_URL }}{{ resultado }}</p>
 </div>
 
     <div id="apoio">

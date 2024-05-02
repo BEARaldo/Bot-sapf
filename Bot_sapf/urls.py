@@ -20,26 +20,9 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
 ]
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-"""  
-urlpatterns = [
-    path('',views.login_view, name='login_view'),
-    #pagina1 é o mesmo html da rota login/
-    path('pagina1/', views.pagina1, name="pagina1"),
-    path('accounts/', include('django.contrib.auth.urls')),
-    #testes abaixo:
-    path('choice/', views.consulta_cidadão, name='choice'),
-    #path('test/', views.test, name='test'),
-
-    path('reg/', views.reg, name='reg'),
-    path('/return_cpf', views.return_cpf, name='test'),
-    path('consulta_eleitoral/', ConsultaEleitoralView.as_view(), name='consulta_eleitoral')
-
-
-]
-"""
 if settings.DEBUG:
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
     urlpatterns += staticfiles_urlpatterns()

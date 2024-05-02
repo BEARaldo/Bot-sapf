@@ -12,9 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-q&b=kb&n!8mfr92t25@$=&!*$z$6l!fuhg3!yizpjk#&7auaov"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost',
+                 '172.25.5.117']
 
 
 # Application definition
@@ -55,12 +56,13 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'django.template.context_processors.media',
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = "Bot_sapf.wsgi.application"
+WSGI_APPLICATION = "bot_sapf.wsgi.application"
 
 
 # Database
@@ -105,20 +107,12 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.0/howto/static-files/
-
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# settings.py
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Para onde o 'collectstatic' vai copiar os arquivos
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'Bot_sapf', 'static'),]  # Seus diretórios de desenvolvimento
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'Bot_sapf', 'static'),]
 
-MEDIA_URL = '/Bot_sapf/static/media/'
-# MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, './Bot_sapf/static/media/')  # Onde os arquivos de mídia são armazenados
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Bot_sapf', 'media')
 
 
 
