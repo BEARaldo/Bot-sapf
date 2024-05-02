@@ -26,7 +26,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "FreelaFront",
+    "Bot_sapf",
 ]
 
 MIDDLEWARE = [
@@ -41,7 +41,7 @@ MIDDLEWARE = [
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
-ROOT_URLCONF = "FreelaFront.urls"
+ROOT_URLCONF = "Bot_sapf.urls"
 
 TEMPLATES = [
     {
@@ -60,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "FreelaFront.wsgi.application"
+WSGI_APPLICATION = "Bot_sapf.wsgi.application"
 
 
 # Database
@@ -113,12 +113,12 @@ USE_TZ = True
 # settings.py
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Para onde o 'collectstatic' vai copiar os arquivos
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'FreelaFront', 'static'),]  # Seus diretórios de desenvolvimento
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'Bot_sapf', 'static'),]  # Seus diretórios de desenvolvimento
 
-MEDIA_URL = '/FreelaFront/static/media/'
+MEDIA_URL = '/Bot_sapf/static/media/'
 # MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, './FreelaFront/static/media/')  # Onde os arquivos de mídia são armazenados
+MEDIA_ROOT = os.path.join(BASE_DIR, './Bot_sapf/static/media/')  # Onde os arquivos de mídia são armazenados
 
 
 
