@@ -13,9 +13,7 @@ body{
 #barra a{
     color: white;
 }
-#content{
-    margin-right: 5px;
-}
+
 #nabar{
     margin-top: 6px !important;
     padding-top: 10px;
@@ -29,9 +27,7 @@ body{
     font-weight: bold;
     color: white;
     font-size: 13px;
-    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
     backdrop-filter: blur(10px);
-    border: 3px solid rgba(255, 255, 255, 0.1);
 }
 #footer {
     position: fixed;
@@ -61,3 +57,12 @@ body{
     color: #fff;
     text-decoration: none;
 }
+
+#sair{
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    margin-left: 40%;
+    margin-bottom: 5px;
+    color: white;
+}
+

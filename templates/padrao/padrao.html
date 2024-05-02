@@ -15,15 +15,18 @@
           <img src="{% static 'img/' %}" width="30" height="30" class="d-inline-block align-top" alt="">
           SAPF - Partido do Desenvolvimento Sustentável
         </a>
+        
       </nav>
 
-    <div id="content">
         <div id="nabar">
             <p>Nome: {{ user_data.name }}</p>
             <p>Nº Título: {{ user_data.titulo }}</p>
             <p>Partido: {{ user_data.partido }}</p>
+            <div id="aa">
+                <a id="sair" href="{% url 'logout' %}" class="btn">Sair</a>
+            </div>
+
         </div>
-    </div>
     
     {% block content %}
 
