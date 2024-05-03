@@ -62,7 +62,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "bot_sapf.wsgi.application"
+WSGI_APPLICATION = "Bot_sapf.wsgi.application"
 
 
 # Database

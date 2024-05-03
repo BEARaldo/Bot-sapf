@@ -20,7 +20,7 @@ class LoginView(FormView):
     form_class = LoginForm
     success_url = '/consultar_cpf/'  # Redirecionar para a URL desejada após o sucesso
 
-    def form_valid(self, form):
+    def form_valid(self, form, request):
         titulo_eleitor = form.cleaned_data['titulo_eleitor']
         password = form.cleaned_data['password']
         user_session = UserSession()
