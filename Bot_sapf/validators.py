@@ -3,7 +3,7 @@ from typing import List
 from . import forms
 
 
-class TituloEleitoral(LoginForms):
+class LoginForm(forms):
     """Classe referente ao Título eleitoral"""
 
     def __init__(self):

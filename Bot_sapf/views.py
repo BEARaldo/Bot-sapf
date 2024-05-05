@@ -13,23 +13,32 @@ from django.conf import settings
 from .forms import LoginForm
 from .services import sapf_connect, tituloEleitoral_connect, cpfAPI_connect, generatePdf
 from .services.sapf_connect import UserSession
+from django.views.generic.edit import FormView
 
+
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
+from django.views.generic.edit import FormView
+from .forms import LoginForm
 
 class LoginView(FormView):
     template_name = 'login.html'
     form_class = LoginForm
     success_url = '/consultar_cpf/'  # Redirecionar para a URL desejada após o sucesso
 
-    def form_valid(self, form, request):
+    def form_valid(self, form):
         titulo_eleitor = form.cleaned_data['titulo_eleitor']
         password = form.cleaned_data['password']
-        user_session = UserSession()
-        if user_session.login_user(titulo_eleitor, password):
-            request.session['user_data'] = user_session.user_data
+        
+        # Autenticar o usuário
+        user = authenticate(username=titulo_eleitor, password=password)
+        if user is not None:
+            login(self.request, user)  # Login do usuário
             return super().form_valid(form)
         else:
             form.add_error(None, 'Seu título de eleitor ou senha está incorreto.')
             return self.form_invalid(form)
+
 
     def form_invalid(self, form):
         return super().form_invalid(form)

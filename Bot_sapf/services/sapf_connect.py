@@ -1,9 +1,8 @@
-import requests
 from bs4 import BeautifulSoup
 
 
 class UserSession:
-    def __init__(self):
+    def __init__(self, requests):
         self.login_url = 'https://sapf.tse.jus.br/sapf/login'
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36'
@@ -45,7 +44,7 @@ class UserSession:
         else:
             return False
 
-    def access_page(self, page_url):
+    def access_page(self, page_url, request):
         response = self.session.get(page_url, headers=self.headers)
         if response.ok:
             return response.text

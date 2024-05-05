@@ -1,2 +1,7 @@
 /ficha apoio.pdf
 /requirements.txt
+/venv
+/venvLinux
+/__pycache__
+/Bot_sapf/services/__pycache__/
+/Bot_sapf/__pycache__/
