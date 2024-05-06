@@ -43,6 +43,8 @@ class LoginView(FormView):
         return super().form_invalid(form)
 
 class LogoutView(LoginRequiredMixin, RedirectView):
+    
+
     url = reverse_lazy('login_view')
     def get(self, request, *args, **kwargs):
         logout(request)
@@ -144,7 +146,9 @@ class ServePDF(View):
                 return response
         else:
             return HttpResponseNotFound('The requested PDF was not found in our records.')
-class ConsultaCitizenView(View):
+class ConsultaCitizenView(LoginRequiredMixin, View):
+    login_url = '/'  # URL para redirecionar usuários não autenticados
+    redirect_field_name = 'consultar_cpf'  # Nome do campo de consulta no URL para redirecionamento
     def post(self, request, *args, **kwargs):
         cpf = request.POST.get('cpf', '')
 
