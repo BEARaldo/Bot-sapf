@@ -6,8 +6,7 @@ class cpf_apiSession:
         self.base_url = 'https://deskdata.com.br/pessoas/'
         self.cookie_manual = {
             'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b': 'thihft%40gmail.com%7C1716940020%7CE7FzL6b1Q9aCnRDKl3yb3gtri0TBHHQxYfVrg2PFvXU%7Cc2f39963e447996b2abdad79f7d6a0c62832d6f9ec6ec505680cb30df244116b'
-                                                                  # :
-        } # colocar em json ou variavel de sistema
+        }
         self.dados = None
 
     def capturar_dados(self, html_response):
@@ -20,7 +19,6 @@ class cpf_apiSession:
                 rotulo = linha.find('th').text.strip()
                 dado = linha.find('td').text.strip()
                 dados_basicos[rotulo] = dado
-        # dados_basicos ={'nome': 'Geraldo Pereira De Castro Junior', 'dataNascimento': '02/07/1997', 'nomeMae': 'Cleonice Maria De Castro', 'cpf': '056.900.451-95'}
 
         return dados_basicos
 
@@ -37,11 +35,11 @@ class cpf_apiSession:
         response_post = requests.post(self.base_url, data=payload_cpf, cookies=self.cookie_manual)
         if 'erros' not in response_post.text:
             self.dados = self.capturar_dados(response_post.text)
-        print('deskdata:', self.dados)
-        # self.dados = {'nome': 'Geraldo Pereira De Castro Junior', 'dataNascimento': '02/07/1997', 'nomeMae': 'Cleonice Maria De Castro', 'cpf': '056.900.451-95'}
-        return self.dados
-        # else:
-        #     return "Solicitação falhou. O CPF informado é invalido."
+            return self.dados
+        else:
+            return "Solicitação falhou. O CPF informado é inválido."
+
+
 
 # if __name__ == '__main__':
 #     client = cpf_apiSession()

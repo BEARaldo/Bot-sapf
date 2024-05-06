@@ -1,4 +1,3 @@
-import datetime
 import os
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import FormView, RedirectView, View, TemplateView
@@ -48,12 +47,18 @@ class LogoutView(LoginRequiredMixin, RedirectView):
     def get(self, request, *args, **kwargs):
         logout(request)
         return super().get(request, *args, **kwargs)
+    
+
 
 class ConsultaEleitoralView(View):
     async def get(self, request):
         # Recupera variáveis da URL
         consulta_dados = await sync_to_async(request.session.get)('consulta_dados', {})
-        # print(f"Eleitoral: {consulta_dados}") #Verificar chegada dos dados
+        if not isinstance(consulta_dados, dict):
+            # Se consulta_dados não for um dicionário, retorna um erro
+            return HttpResponseBadRequest("Os dados de consulta não estão disponíveis ou são inválidos.")
+
+        # Continua o processamento normal
         nome = consulta_dados.get('Nome')
         nomeMae = consulta_dados.get('Nome da mãe')
         dataNascimento = consulta_dados.get('Nascimento')
@@ -93,10 +98,21 @@ class ConsultaEleitoralView(View):
         else:
             return HttpResponseNotFound('The requested PDF was not found in our records.')
     def pdf_generate(self, ):
+        pdf_path = os.path.join(settings.MEDIA_ROOT, '')
+
+        if os.path.exists(pdf_path):
+            with open(pdf_path, 'rb') as pdf:
+                response = HttpResponse(pdf.read(), content_type='application/pdf')
+                response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path) + self.resultado['nTitulo']
+                return response
+        else:
+            return HttpResponseNotFound('The requested PDF was not found in our records.')
+    def pdf_generate(self, ):
 
 
         #titulotemporario
         self.titulo_consultor = 'n logado no SAPF'
+        '''
         dados = {'nome': self.resultado['nome'],
                  'data_d': datetime.date.today().day,
                  'data_m': datetime.date.today().month,
@@ -105,8 +121,9 @@ class ConsultaEleitoralView(View):
                  'zona': self.resultado['zona'],
                  'titulo_coletor': self.titulo_consultor,
                  'nome_coletor': 'nome logado no SAPF'}
-        # dados = {'nome': 'Geraldo Pereira De Castro Junior', 'data1': '22', 'data2': '33', 'data3': '4444',
-        #  'titulo': '025239362089', 'zona': 'DF 005'}
+        '''
+        dados = {'nome': 'Geraldo Pereira De Castro Junior', 'data1': '22', 'data2': '33', 'data3': '4444',
+        'titulo': '025239362089', 'zona': 'DF 005'}
 
         print(f"pdf dados {dados}")
         input_pdf_path = os.path.join(settings.MEDIA_ROOT, 'ficha_apoio.pdf')
