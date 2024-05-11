@@ -1,7 +1,9 @@
+import datetime
 import os
+
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import FormView, RedirectView, View, TemplateView
-from django.http import HttpResponseBadRequest, HttpResponseRedirect, HttpResponse, HttpResponseNotFound
+from django.http import HttpResponseBadRequest, HttpResponseRedirect, HttpResponse, HttpResponseNotFound, FileResponse
 from asgiref.sync import sync_to_async
 import asyncio
 from django.contrib.auth import logout, authenticate
@@ -12,13 +14,12 @@ from django.conf import settings
 from .forms import LoginForm
 from .services import sapf_connect, tituloEleitoral_connect, cpfAPI_connect, generatePdf
 from .services.sapf_connect import UserSession
-from django.views.generic.edit import FormView
-
-
+import logging
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.models import User
-from django.views.generic.edit import FormView
-from .forms import LoginForm
+
+
+logger = logging.getLogger(__name__)
+
 
 class LoginView(FormView):
     template_name = 'login.html'
@@ -51,16 +52,12 @@ class LogoutView(LoginRequiredMixin, RedirectView):
         return super().get(request, *args, **kwargs)
     
 
-
 class ConsultaEleitoralView(View):
     async def get(self, request):
+        import uuid
         # Recupera variáveis da URL
         consulta_dados = await sync_to_async(request.session.get)('consulta_dados', {})
-        if not isinstance(consulta_dados, dict):
-            # Se consulta_dados não for um dicionário, retorna um erro
-            return HttpResponseBadRequest("Os dados de consulta não estão disponíveis ou são inválidos.")
-
-        # Continua o processamento normal
+        # print(f"Eleitoral: {consulta_dados}") #Verificar chegada dos dados
         nome = consulta_dados.get('Nome')
         nomeMae = consulta_dados.get('Nome da mãe')
         dataNascimento = consulta_dados.get('Nascimento')
@@ -84,37 +81,44 @@ class ConsultaEleitoralView(View):
         }
 
         pdf_path = await sync_to_async(self.pdf_generate)()
+
         print(f'pdf path 1: {pdf_path}')
+        if pdf_path:
+            try:
+                pdf_key = str(uuid.uuid4())  # Gerar um identificador único
+                request.session['pdf_token'] = pdf_key
+    
+                request.session[pdf_key] = pdf_path  # Armazenar o caminho no objeto de sessão
+                print(f'\n\ngerado session key: {pdf_key}\ncaminho pego com request.session.get(pdf_key,): {request.session.get(pdf_key,{})}\n\n')
+                # return redirect('serve_pdf', pdf_key=pdf_key)
+                return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
+                # HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_url': pdf_url}))
 
+                # return HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_key': pdf_key}))
+    
+            except Exception as e:
+                HttpResponseNotFound({f'erro no negocio uuid:{e}'})
+        else:
+            return HttpResponseNotFound(request('./test_diretorio/pdf.html', {'pdf_key': 'Falha ao carregar arquivo. tente novamente'}))
         # Aqui você decide como deseja tratar o retorno do PDF ou outro resultado
-        return render(request, './test_diretorio/pdf.html', {'resultado': f"pdfs/{self.titulo_consultor}/{self.resultado['nTitulo']}.pdf"})
-
-    def pdf_load(self, ):
-        pdf_path = os.path.join(settings.MEDIA_ROOT, '')
-
-        if os.path.exists(pdf_path):
-            with open(pdf_path, 'rb') as pdf:
-                response = HttpResponse(pdf.read(), content_type='application/pdf')
-                response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path) + self.resultado['nTitulo']
-                return response
-        else:
-            return HttpResponseNotFound('The requested PDF was not found in our records.')
-    def pdf_generate(self, ):
-        pdf_path = os.path.join(settings.MEDIA_ROOT, '')
-
-        if os.path.exists(pdf_path):
-            with open(pdf_path, 'rb') as pdf:
-                response = HttpResponse(pdf.read(), content_type='application/pdf')
-                response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path) + self.resultado['nTitulo']
-                return response
-        else:
-            return HttpResponseNotFound('The requested PDF was not found in our records.')
+        # return render(request, './test_diretorio/pdf.html', {'resultado': f"pdfs/{self.titulo_consultor}/{self.resultado['nTitulo']}.pdf"})
+    # #########
+    # def pdf_load(self, ):
+    #     pdf_path = os.path.join(settings.MEDIA_ROOT, '')
+    #
+    #     if os.path.exists(pdf_path):
+    #         with open(pdf_path, 'rb') as pdf:
+    #             response = HttpResponse(pdf.read(), content_type='application/pdf')
+    #             response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path) + self.resultado['nTitulo']
+    #             return response
+    #     else:
+    #         return HttpResponseNotFound('The requested PDF was not found in our records.')
+    ############
     def pdf_generate(self, ):
 
 
         #titulotemporario
         self.titulo_consultor = 'n logado no SAPF'
-        '''
         dados = {'nome': self.resultado['nome'],
                  'data_d': datetime.date.today().day,
                  'data_m': datetime.date.today().month,
@@ -123,37 +127,108 @@ class ConsultaEleitoralView(View):
                  'zona': self.resultado['zona'],
                  'titulo_coletor': self.titulo_consultor,
                  'nome_coletor': 'nome logado no SAPF'}
-        '''
-        dados = {'nome': 'Geraldo Pereira De Castro Junior', 'data1': '22', 'data2': '33', 'data3': '4444',
-        'titulo': '025239362089', 'zona': 'DF 005'}
+        # dados = {'nome': 'Geraldo Pereira De Castro Junior', 'data1': '22', 'data2': '33', 'data3': '4444',
+        #  'titulo': '025239362089', 'zona': 'DF 005'}
 
         print(f"pdf dados {dados}")
         input_pdf_path = os.path.join(settings.MEDIA_ROOT, 'ficha_apoio.pdf')
+
         output_pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdfs', dados['titulo_coletor'])
         os.makedirs(output_pdf_path, exist_ok=True)
         out_file = generatePdf.fill_form(input_pdf_path, dados, output_pdf_path + f'/{dados["titulo"]}.pdf')
+        print(f"arquivo salvo {out_file}")
         return out_file
-class ServePDF(View):
-    def get(self, request, filename):
-        pdf_path = os.path.join(settings.MEDIA_ROOT,filename)
-        print('no serve',pdf_path)
-        if os.path.exists(pdf_path):
-            with open(pdf_path, 'rb') as pdf:
-                response = HttpResponse(pdf.read(), content_type='application/pdf')
-                response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path)
-                #imprima response
 
-                return response
+class pdf_loadPage(View):
+    def get(self,request,pdf_key):
+        try:
+            print(f'session key no servePDF: {type(pdf_key)}')
+        except Exception as e:
+            print(e)
+
+        pdf_path = request.session.get(str(pdf_key))
+        pdf_keyy = request.session.get('pdf_token')
+        print('a',request.session.get(pdf_keyy,{}))
+        print(f'pdfpath no servePDF: {pdf_path}')
+
+        if pdf_path and os.path.exists(pdf_path):
+            pdf_url = settings.MEDIA_URL + os.path.relpath(pdf_path, settings.MEDIA_ROOT)
+            print(pdf_url)
+            # return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
+            return render(request, './test_diretorio/pdf.html', {'pdf_key': pdf_key})
+
+
         else:
-            return HttpResponseNotFound('The requested PDF was not found in our records.')
-class ConsultaCitizenView(LoginRequiredMixin, View):
-    login_url = '/'  # URL para redirecionar usuários não autenticados
-    redirect_field_name = 'consultar_cpf'  # Nome do campo de consulta no URL para redirecionamento
+            return HttpResponseNotFound('Erro na consulta do PDF. Arquivo não encontrado')
+        # if pdf_path and os.path.exists(pdf_path):
+        #     with open(pdf_path, 'rb') as pdf:
+        #         response = HttpResponse(pdf.read(), content_type='application/pdf')
+        #         response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path)
+        #         return response
+
+        logger.debug(f"Session Key: {pdf_key}")
+        logger.debug(f"PDF Path from session: {pdf_path}")
+
+        if pdf_path and os.path.exists(pdf_path):
+            pdf_url = settings.MEDIA_URL + os.path.relpath(pdf_path, settings.MEDIA_ROOT)
+            print(pdf_url)
+            # return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
+            return render(request, './test_diretorio/pdf.html', {'pdf_key': pdf_key})
+
+
+class ServePDF(View):
+
+    def get(self, request, pdf_key):
+        pdf_path = request.session.get(str(pdf_key))#se pa str() é necessário
+        print('f',pdf_path)
+        if pdf_path and os.path.exists(pdf_path):
+            try:
+                return FileResponse(open(pdf_path, 'rb'), content_type='application/pdf')
+            except Exception as e:
+                return HttpResponseNotFound('Error loading the PDF: {}'.format(e))
+        else:
+            return HttpResponseNotFound('The requested PDF was not found.')
+
+# def get(self, request, pdf_key):
+        # try:
+        #     print(f'session key no servePDF: {type(pdf_key)}')
+        # except Exception as e:
+        #     print(e)
+        #
+        # pdf_path = request.session.get(str(pdf_key))
+        # pdf_keyy = request.session.get('pdf_token')
+        # print(request.session.get(pdf_keyy,{}))
+        # print(f'pdfpath no servePDF: {pdf_path}')
+        #
+        # if pdf_path and os.path.exists(pdf_path):
+        #     with open(pdf_path, 'rb') as pdf:
+        #         response = HttpResponse(pdf.read(), content_type='application/pdf')
+        #         response['Content-Disposition'] = 'inline; filename="' + os.path.basename(pdf_path)
+        #         return response
+        # else:
+        #     return HttpResponseNotFound('Erro na consulta do PDF. Arquivo não encontrado')
+
+        # logger.debug(f"Session Key: {pdf_key}")
+        # logger.debug(f"PDF Path from session: {pdf_path}")
+
+        # if pdf_path and os.path.exists(pdf_path):
+        #     pdf_url = settings.MEDIA_URL + os.path.relpath(pdf_path, settings.MEDIA_ROOT)
+        #     print(pdf_url)
+        #     # return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
+        #     return render(request, './test_diretorio/pdf.html', {'pdf_key': pdf_key})
+
+
+
+class ConsultaCitizenView(View):
     def post(self, request, *args, **kwargs):
+        import uuid
         cpf = request.POST.get('cpf', '')
 
         session = cpfAPI_connect.cpf_apiSession()
         request.session['consulta_dados'] = session.consultar_cpf(cpf)
+        # pdf_key = str(uuid.uuid4())  
+        # request.session['pdf_token'] = pdf_key
+        # request.session[pdf_keyy] = 'apareci'  # Armazenar o caminho no objeto de sessão
         # session['consulta_dados'] = dados
 
         return HttpResponseRedirect(reverse('consulta_eleitoral'))

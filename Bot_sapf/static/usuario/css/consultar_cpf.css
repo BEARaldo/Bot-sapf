@@ -4,24 +4,74 @@ body {
     margin: 0;
     padding: 0;
 }
-#login {
-    position: absolute;
-    top: 42%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+
+.container2 {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .box {
+    background-color: #fff;
+    padding: 50px;
     border-style: double;
-    padding: 18px;
-    width: 400px;
-    border-width: 8px;
+    width: 30%;
+    border-radius: 10px;
+    text-align: center;
+    border-width: 5px;
     background-color: white;
-    z-index: 1;
+  }
+  
+  
+  input:focus{
+    outline: none;
+    max-width: 90%;
+  }
+  #opcao{
+    margin-top: 12px;
+  }
+  
+
+  
+
+
+  @media (max-width: 980px) {
+    #cpfInput{
+        max-width: 90%; /* Defina o valor que desejar, por exemplo, 90% */
+    }
+    #h2{
+        max-width: 90%;
+        font-size: 20px;
+    }
+    .box{
+        margin-top: 10px;
+    }
 }
-#login form {
-    text-align: center;
-}
-#login h1 {
-    text-align: center;
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 #tudo {
     display: none;
     backdrop-filter: blur(10px);
@@ -105,3 +155,6 @@ body {
             .5em 0 0 black;
     }
 }
+
+
+

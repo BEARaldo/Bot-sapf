@@ -42,11 +42,17 @@
                             
                             <button type="submit" class="btn btn-primary">Logar</button>
                         </form>
+                        <br>
+                        {% for chave, valor in form.errors.items %}
+                            {{ valor }}
+                        {% endfor %}
+                        <!--
                         {% if error_message %}
                             <div class="alert alert-danger mt-3" role="alert">
                                 {{ error_message }}
                             </div>
                         {% endif %}
+                        -->
                     </div>
                 </div>
             </div>

@@ -1,6 +1,5 @@
-
-
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,36 +9,34 @@
     <link rel="stylesheet" href="{% static 'usuario/css/padrao.css' %}">
 </head>
 <body>
-    <nav id="barra" class="navbar navbar-light bg-light">
+    <nav id="nave" class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">
-          <img src="{% static 'img/' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-          SAPF - Partido do Desenvolvimento Sustentável
-        </a>
-        
-      </nav>
-
-        <div id="nabar">
-            <p>Nome: {{ user_data.name }}</p>
-            <p>Nº Título: {{ user_data.titulo }}</p>
-            <p>Partido: {{ user_data.partido }}</p>
-            <div id="aa">
-                <a id="sair" href="{% url 'logout' %}" class="btn">Sair</a>
+            <img src="{% static 'img/' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+            SAPF - Partido do Desenvolvimento Sustentável
+          </a>
+    </nav>
+    
+    <main id="container">
+        <div id="info">
+            <h6>Nome: </h6>
+            <h6>Nº Título:</h6>
+            <h6>Partido: </h6>
+            <div id="caixa_sair">
+               <a id="sair" href="{% url 'logout' %}" class="btn">Sair</a>
             </div>
-
         </div>
+    </main>
+    
     
     {% block content %}
 
     {% endblock %}
 
-<footer id="footer">
-    <p>SAPF - Sistema de Apoiamento a Partido em Formação, Versão: 2.17.11, Tribunal Superior Eleitoral.</p>
-   
-</footer>
 
+
+    
+<footer id="footer" >
+    <p>SAPF - Sistema de Apoiamento a Partido em Formação, Versão: 2.17.11, Tribunal Superior Eleitoral.</p>
+</footer>
 </body>
 </html>
-
-
-
-

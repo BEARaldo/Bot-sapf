@@ -10,15 +10,20 @@
     <title>Consulta de Apoio</title>
 </head>
 <body>
-    <div id="login">
-        <h1>Consulta ao CPF</h1>
-        <form action="{% url 'consultar_cpf' %}" method="POST">
-            {% csrf_token %}
+
+
+    <div class="container2">
+        <div class="box">
+          <h2 id="h2">Consultar CPF</h2>
+          <form action="{% url 'consultar_cpf' %}" method="POST">{% csrf_token %}
             <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
             <input type="hidden" name="opc" value="Registrar Apoio">
-            <input type="submit" value="Buscar">
-        </form>
-    </div>
+            <br>
+            <input id="opcao"  type="submit" value="Buscar">
+          </form>
+          
+        </div>
+      </div>
 
     <!--Tela de carregamento que será exibido após buscar o cpf-->
     <div id="tudo">
