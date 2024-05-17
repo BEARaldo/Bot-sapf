@@ -16,13 +16,16 @@
     font-weight: bold;
 }
 
-.formulario input{
+.formulario input:not(#ver_senha){
     width: 100%;
     margin-bottom: 10px;
     outline: none;
     
 }
-
+#ver_senha{
+    margin-bottom: 20px;
+    margin-left: 5px;
+}
 
 #quadradin{
     margin-bottom: 10px;
@@ -46,6 +49,7 @@
     font-weight: bold;
     background-color: rgb(220, 218, 211);
 }
+
 
 
 @media (max-width: 600px) {

@@ -1,5 +1,5 @@
 from django.urls import path, include
-from . import views, settings
+from Bot_sapf import views, settings
 from .services import *
 from .views import *
 from django.conf import settings
@@ -11,7 +11,7 @@ from django.contrib import admin
 
 urlpatterns = [
     path('', LoginView.as_view(), name='login_view'),
-     path('cadastrar/', CadastrarView.as_view(), name='cadastrar_url'),
+    path('cadastrar/', CadastrarView.as_view(), name='cadastrar_url'),
     path('consultar_cpf/', ConsultaCitizenView.as_view(), name='consultar_cpf'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('consulta_eleitoral/', ConsultaEleitoralView.as_view(), name='consulta_eleitoral'),

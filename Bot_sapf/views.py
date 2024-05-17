@@ -44,29 +44,27 @@ class LoginView(FormView):
         return super().form_invalid(form)
 
 
-class CadastrarView(View):
-    def get(self, request, *args, **kwargs):
+# views.py
+from django.views.generic.edit import FormView
+from django.urls import reverse_lazy
+from django.contrib.auth import login
+from .forms import UserRegistrationForm
 
-        if request.method == "GET":
-            return render(request, 'cadastro.html')
-        else:
-            username = request.POST.get('nome')
-            titulo_eleitor = request.POST.get('titulo_eleitor')
-            cpf = request.POST.get('cpf')
-            nome_partido = request.POST.get('nome_do_partido')
-            password = request.POST.get('senha')
-            user = User.objects.get(username=username). first()
-            if user:
-                return HttpResponse('Erro')
-            
-            user = User.objects.create_user(username=username, titulo_eleitor=titulo_eleitor, cpf=cpf, nome_partido=nome_partido, password=password)
-            user.save()
-            return HttpResponse('boa')
+class CadastrarView(FormView):
+    template_name = 'cadastrar.html'
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy('login_view')
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return super().form_valid(form)
+
 
             
             
 
-        return render(request, 'cadastro.html')
+        return render(request, 'cadastrar.html')
 
 
 class LogoutView(LoginRequiredMixin, RedirectView):
