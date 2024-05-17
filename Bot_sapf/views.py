@@ -16,7 +16,7 @@ from .services import sapf_connect, tituloEleitoral_connect, cpfAPI_connect, gen
 from .services.sapf_connect import UserSession
 import logging
 from django.contrib.auth import authenticate, login
-
+from django.contrib.auth.models import User
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +42,32 @@ class LoginView(FormView):
 
     def form_invalid(self, form):
         return super().form_invalid(form)
+
+
+class CadastrarView(View):
+    def get(self, request, *args, **kwargs):
+
+        if request.method == "GET":
+            return render(request, 'cadastro.html')
+        else:
+            username = request.POST.get('nome')
+            titulo_eleitor = request.POST.get('titulo_eleitor')
+            cpf = request.POST.get('cpf')
+            nome_partido = request.POST.get('nome_do_partido')
+            password = request.POST.get('senha')
+            user = User.objects.get(username=username). first()
+            if user:
+                return HttpResponse('Erro')
+            
+            user = User.objects.create_user(username=username, titulo_eleitor=titulo_eleitor, cpf=cpf, nome_partido=nome_partido, password=password)
+            user.save()
+            return HttpResponse('boa')
+
+            
+            
+
+        return render(request, 'cadastro.html')
+
 
 class LogoutView(LoginRequiredMixin, RedirectView):
     

@@ -1,0 +1,60 @@
+
+
+.box{
+    border: double 5px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    padding: 30px;
+
+}
+
+
+.formulario{
+    font-weight: bold;
+}
+
+.formulario input{
+    width: 100%;
+    margin-bottom: 10px;
+    outline: none;
+    
+}
+
+
+#quadradin{
+    margin-bottom: 10px;
+}
+.cadastrese{
+    position: absolute;
+    top: -4%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    font-weight: bold;
+    padding: 2px;
+}
+
+
+#div_botao{
+    text-align: center;
+}
+
+.botao_cadastrar{
+    font-weight: bold;
+    background-color: rgb(220, 218, 211);
+}
+
+
+@media (max-width: 600px) {
+    body{
+        font-size: 12px !important;
+    }
+    .box{
+        width: 90%;
+    }
+}
+
+
