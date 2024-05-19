@@ -12,7 +12,8 @@ body{
     border: none !important;
     position: absolute;
     left: 40%;
-    top: -3%;
+    top: -4%;
+    padding: 1px;
 }
 
 #nav{

@@ -79,16 +79,7 @@
     </div>
 
     <script>
-          document.getElementById('cpf').addEventListener('input', function (e) {
-                var titulo_eleitor = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-                if (titulo_eleitor.length > 0) {
-                    titulo_eleitor = titulo_eleitor.replace(/(\d{4})(\d{4})(\d{4})/, '$1 $2 $3'); // Formata o título de eleitor
-                }
-                if (titulo_eleitor.length > 12) {
-                    titulo_eleitor = titulo_eleitor.substring(0, 12); // Limita a 12 caracteres
-                }
-                e.target.value = titulo_eleitor;
-            });
+         
         function togglePasswordVisibility() {
             var passwordInput = document.getElementById("password");
             if (passwordInput.type === "password") {
@@ -100,4 +91,3 @@
     </script>
 </body>
 </html>
-
