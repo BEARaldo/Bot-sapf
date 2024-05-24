@@ -1,4 +1,97 @@
 {% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastre-se</title>
+    <link rel="stylesheet" href="{% static 'usuario/css/login.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" 
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+        <div class="container-fluid">
+            <div class="box">
+                <div id="quadradin">
+                    <div class="logar">LOGIN - SAPF</div>
+                </div>
+                
+                    <form method="POST" class="formulario">{% csrf_token %} 
+                        Título de Eleitor:
+                        <input name="titulo_eleitor" type="text" placeholder="Título de Eleitor" id="Titueleitor">
+                        <br>
+                       
+                        Senha:
+                        <input name="password" type="password" placeholder="Senha" id="senha">
+                        <input id="ver_senha" type="checkbox" onclick="togglePasswordVisibility()"> ver senha
+                        <a style="float: right;" id="" href="{% url 'cadastrar_url' %}"> Fazer o cadastro aqui!</a>
+                        <div id="div_botao">
+                            <input type="submit" value="Logar" class="botao_logar">
+                            
+                        </div>
+                    </form>
+
+                   
+                   
+                    
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="info">
+                                    <p>Instruções de uso: Para acessar o sistema, o representante legal da agremiação em formação deve utilizar suas credenciais de acesso ao SAPF. O representante legal da agremiação em formação, para obtenção de senha de acesso ao SAPF, deve encaminhar requerimento ao TSE, por meio do Protocolo Judiciário, na Sala 504 ou fax: (61) 3030-9951, informando os seguintes dados:</p>
+                                    <ul>
+                                        <li>Nome</li>
+                                        <li>Número do Título Eleitoral</li>
+                                        <li>E-mail</li>
+                                        <li>Nome e a sigla do partido</li>
+                                    </ul>
+                                    <p><a href="#" id="a_senha">A senha será encaminhada para o e-mail indicado.</a></p>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+        </div>
+                {% for chave, valor in form.errors.items %}
+                <div class="container-fluid">
+                    <div class="alert alert-danger">
+                        {{ valor }}
+                    </div>
+                </div>
+                    {% endfor %}
+        <script>
+            document.getElementById('cpf').addEventListener('input', function (e) {
+                var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+                if (cpf.length > 0) {
+                    cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Formata o CPF
+                }
+                if (cpf.length > 14) {
+                    cpf = cpf.substring(0, 14); // Limita a 14 caracteres
+                }
+                e.target.value = cpf;
+            });
+
+            
+            document.querySelector('form').addEventListener('submit', function () {
+                document.getElementById('tudo').style.display = 'block';
+            });
+            function togglePasswordVisibility() {
+                    var passwordInput = document.getElementById("senha"); // Corrigido para selecionar o campo de senha
+                    if (passwordInput.type === "password") {
+                        passwordInput.type = "text";
+                    } else {
+                        passwordInput.type = "password";
+                    }
+                }
+        </script>
+
+</body>
+</html>
+
+
+
+<!--
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -41,21 +134,12 @@
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Logar</button>
+                            Não cadas<a style="position: absolute;" id="" href="{% url 'cadastrar_url' %}">Fazer o cadastro aqui!</a>
                         </form>
                         <br>
-                        {% for chave, valor in form.errors.items %}
-                            {{ valor }}
-                        {% endfor %}
-                        <!--
-                        {% if error_message %}
-                            <div class="alert alert-danger mt-3" role="alert">
-                                {{ error_message }}
-                            </div>
-                        {% endif %}
-                        -->
                     </div>
                 </div>
-                <a style="float: right;" id="naocadastrado" href="{% url 'cadastrar_url' %}">Fazer o cadastro aqui!</a>
+                
 
             </div>
         </div>
@@ -91,3 +175,4 @@
     </script>
 </body>
 </html>
+-->
