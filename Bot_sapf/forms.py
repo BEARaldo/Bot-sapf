@@ -34,7 +34,6 @@ class LoginForm(forms.Form):
 # forms.py
 from django import forms
 from django.contrib.auth.models import User
-from .models import Cadastrados
 
 class UserRegistrationForm(forms.ModelForm):
     nome_completo = forms.CharField(max_length=255)
@@ -47,17 +46,3 @@ class UserRegistrationForm(forms.ModelForm):
         model = User
         fields = ['titulo_eleitor', 'password']
 
-    def save(self, commit=True):
-        user = super().save(commit=False)
-        user.username = self.cleaned_data['titulo_eleitor']
-        user.set_password(self.cleaned_data['password'])
-        if commit:
-            user.save()
-            Cadastrados.objects.create(
-                user=user,
-                nome_completo=self.cleaned_data['nome_completo'],
-                cpf=self.cleaned_data['cpf'],
-                titulo_eleitor=self.cleaned_data['titulo_eleitor'],
-                nome_do_partido=self.cleaned_data['nome_do_partido']
-            )
-        return user

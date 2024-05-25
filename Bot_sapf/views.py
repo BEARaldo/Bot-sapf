@@ -17,6 +17,9 @@ from .services.sapf_connect import UserSession
 import logging
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
+from .models import Cadastrados 
+
+
 
 logger = logging.getLogger(__name__)
 
@@ -45,9 +48,13 @@ class LoginView(FormView):
 
 
 # views.py
+
 from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
-from django.contrib.auth import login
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from .models import Cadastrados
 from .forms import UserRegistrationForm
 
 class CadastrarView(FormView):
@@ -56,15 +63,42 @@ class CadastrarView(FormView):
     success_url = reverse_lazy('login_view')
 
     def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return super().form_valid(form)
+        nome_completo = form.cleaned_data['nome_completo']
+        titulo_eleitor = form.cleaned_data['titulo_eleitor']
+        cpf = form.cleaned_data['cpf']
+        nome_do_partido = form.cleaned_data['nome_do_partido']
+        password = form.cleaned_data['password']
 
+        # Verificar se o usuário já existe com o título de eleitor fornecido
+        if User.objects.filter(username=titulo_eleitor).exists():
+            return HttpResponse('Usuário já cadastrado')
+
+        # Criar e salvar o usuário no modelo User do Django
+        user_django = User.objects.create_user(username=titulo_eleitor, password=password)
+        
+        # Criar e salvar o usuário no modelo Cadastrados
+        user = Cadastrados.objects.create(
+            user=user_django,  # Associar o usuário Django ao modelo Cadastrados
+            nome_completo=nome_completo,
+            titulo_eleitor=titulo_eleitor,
+            cpf=cpf,
+            nome_do_partido=nome_do_partido,
+        )
+        user.save()
+
+        return super(CadastrarView, self).form_valid(form)
 
             
             
 
         return render(request, 'cadastrar.html')
+
+
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from .models import Cadastrados
+
+
 
 
 class LogoutView(LoginRequiredMixin, RedirectView):
@@ -258,7 +292,17 @@ class ConsultaCitizenView(View):
         return HttpResponseRedirect(reverse('consulta_eleitoral'))
 
     def get(self, request, *args, **kwargs):
-        return render(request, 'area/consultar_cpf.html')
+        # Obtém o usuário autenticado
+        user = request.user
+        # Obtém as informações adicionais do usuário a partir do modelo Cadastrados
+        cadastrado = get_object_or_404(Cadastrados, user=user)
+        context = {
+        'nome_completo': cadastrado.nome_completo,
+        'titulo_eleitor': cadastrado.titulo_eleitor,
+        'cpf': cadastrado.cpf,
+        'nome_do_partido': cadastrado.nome_do_partido,
+    }
+        return render(request, 'area/consultar_cpf.html', context)
 
 
 

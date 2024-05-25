@@ -11,19 +11,20 @@
 </head>
 <body>
 
-
-    <div class="container2">
-        <div class="box">
-          <h2 id="h2">Consultar CPF</h2>
-          <form action="{% url 'consultar_cpf' %}" method="POST">{% csrf_token %}
-            <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
-            <input type="hidden" name="opc" value="Registrar Apoio">
-            <br>
-            <input id="opcao"  type="submit" value="Buscar">
-          </form>
-          
+    <div class="container-fluid">
+        <div class="container2">
+            <div class="box">
+            <h2 id="h2">Consultar CPF</h2>
+            <form action="{% url 'consultar_cpf' %}" method="POST">{% csrf_token %}
+                <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
+                <input type="hidden" name="opc" value="Registrar Apoio">
+                <br>
+                <input id="opcao"  type="submit" value="Buscar">
+            </form>
+            
+            </div>
         </div>
-      </div>
+    </div>
 
     <!--Tela de carregamento que será exibido após buscar o cpf-->
     <div id="tudo">
