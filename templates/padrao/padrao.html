@@ -21,6 +21,11 @@
             <h6><strong>Nome:</strong>  {{ nome_completo }}</h6>
             <h6><strong> Nº Título: </strong> {{ titulo_eleitor }}</h6>
             <h6><strong>Partido: </strong>{{ nome_do_partido }}</h6>
+            
+            <div id="caixa_sair">
+                <a id="criar_user" href="{% url 'cadastrar_url' %}" class="btn">Criar novo usuário</a>
+             </div>
+             
             <div id="caixa_sair">
                <a id="sair" href="{% url 'logout' %}" class="btn">Sair</a>
             </div>

@@ -60,7 +60,7 @@ from .forms import UserRegistrationForm
 class CadastrarView(FormView):
     template_name = 'cadastrar.html'
     form_class = UserRegistrationForm
-    success_url = reverse_lazy('login_view')
+    success_url = reverse_lazy('consultar_cpf')
 
     def form_valid(self, form):
         nome_completo = form.cleaned_data['nome_completo']
