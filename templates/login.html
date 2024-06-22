@@ -27,14 +27,18 @@
                         Senha:
                         <input name="password" type="password" placeholder="Senha" id="senha">
                         <input id="ver_senha" type="checkbox" onclick="togglePasswordVisibility()"> ver senha
-                       
+                        {% for chave, valor in form.errors.items %}
+                        <div class="contai">
+                            <div class="alert alert-danger">
+                                {{ valor }}
+                            </div>
+                        </div>
+                            {% endfor %}
                         <div id="div_botao">
                             <input type="submit" value="Logar" class="botao_logar">
                             
                         </div>
                     </form>
-
-                   
                    
                     
                         <div class="row">
@@ -53,13 +57,6 @@
                         </div>
             </div>
         </div>
-                {% for chave, valor in form.errors.items %}
-                <div class="container-fluid">
-                    <div class="alert alert-danger">
-                        {{ valor }}
-                    </div>
-                </div>
-                    {% endfor %}
         <script>
             document.getElementById('cpf').addEventListener('input', function (e) {
                 var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos

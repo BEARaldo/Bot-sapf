@@ -10,10 +10,12 @@
     padding: 30px;
 }
 
-.alert{
-    margin-top: 10%;
-    margin-left: 2%;
-    width: 20%;
+.contai{
+    float: right;
+}
+
+.contai{
+    font-size: 15px;
 }
 
 .formulario{
@@ -69,6 +71,9 @@
     }
     .box{
         width: 90%;
+    }
+    .logar{
+        margin-top: 5px;
     }
 }
 

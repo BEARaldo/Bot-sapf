@@ -12,26 +12,35 @@ class LoginForm(forms.Form):
         titulo_eleitor = cleaned_data.get('titulo_eleitor')
         password = cleaned_data.get('password')
 
-        # Autenticar o usuário
         user = authenticate(username=titulo_eleitor, password=password)
+        if titulo_eleitor:
+            user = authenticate(username=titulo_eleitor, password=password)
+            if not user:
+                try:
+                    user = User.objects.get(username=titulo_eleitor)
+                except User.DoesNotExist:
+                    self.add_error('titulo_eleitor', "O título de eleitor informado está incorreto.")
+                    return cleaned_data
+
+                if not user.check_password(password):
+                    self.add_error('password', "A senha informada está incorreta.")
+                    return cleaned_data
+
         if not user:
             raise forms.ValidationError("Credenciais inválidas. Por favor, verifique o título de eleitor e a senha.")
         
-        # Atualizar os dados com o usuário autenticado
         cleaned_data['user'] = user
         return cleaned_data
 
     def clean_titulo_eleitor(self):
         titulo_eleitor = self.cleaned_data.get('titulo_eleitor')
 
-        # Valida se o título de eleitor segue o padrão esperado
         if not re.match(r'^\d{12}$', titulo_eleitor):
             raise forms.ValidationError("O título de eleitor deve conter 12 dígitos.")
 
         return titulo_eleitor
 
 
-# forms.py
 from django import forms
 from django.contrib.auth.models import User
 
