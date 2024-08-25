@@ -2,6 +2,10 @@
 /requirements.txt
 /venv
 /venvLinux
+/venv_debian
 /__pycache__
 /Bot_sapf/services/__pycache__/
 /Bot_sapf/__pycache__/
+/.idea
+/templates.old
+/CUsersDautoDesktopubuntuBot-sapfBot_sapfdebug.log
