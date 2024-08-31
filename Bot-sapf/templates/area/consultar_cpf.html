@@ -1,0 +1,55 @@
+{% extends 'padrao/padrao.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'usuario/css/consultar_cpf.css' %}">
+    <title>Consulta de Apoio</title>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="container2">
+            <div class="box">
+            <h2 id="h2">Consultar CPF</h2>
+            <form action="{% url 'consultar_cpf' %}" method="POST">{% csrf_token %}
+                <input type="text" name="cpf" id="cpfInput" placeholder="Digite o CPF" maxlength="14" required>
+                <input type="hidden" name="opc" value="Registrar Apoio">
+                <br>
+                <input id="opcao"  type="submit" value="Buscar">
+            </form>
+            
+            </div>
+        </div>
+    </div>
+
+    <!--Tela de carregamento que será exibido após buscar o cpf-->
+    <div id="tudo">
+        <div id="loader"></div>
+        <div id="loading-text">Aguarde, o seu PDF está sendo gerado<span class="dots">...</span></div>
+    </div>
+
+
+<script>
+document.getElementById('cpfInput').addEventListener('input', function (e) {
+    var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+    if (cpf.length > 0) {
+        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Formata o CPF
+    }
+    if (cpf.length > 14) {
+        cpf = cpf.substring(0, 14); // Limita a 14 caracteres
+    }
+    e.target.value = cpf;
+});
+
+document.querySelector('form').addEventListener('submit', function () {
+    document.getElementById('tudo').style.display = 'block';
+});
+</script>
+
+</body>
+</html>
+{% endblock %}

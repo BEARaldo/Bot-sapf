@@ -1,0 +1,55 @@
+#hr {
+    border: none;
+    border-top: 1px solid #555555;
+    margin: 20px 0;
+}
+#barra {
+    background-color: rgb(25, 23, 44) !important;
+}
+#barra a {
+    color: white;
+}
+#content {
+    margin-right: 5px;
+}
+#nabar {
+    margin-top: 6px !important;
+    padding-top: 10px;
+    padding-right: 10px !important;
+    padding-left: 10px !important;
+    float: right !important;
+    min-width: 200px !important;
+    margin-right: 6px;
+    border-radius: 10px;
+    background-color: rgb(25, 23, 44);
+    font-weight: bold;
+    color: white;
+    font-size: 13px;
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(255, 255, 255, 0.1);
+}
+#footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+}
+
+#visu_pdf{
+    margin-left: 25%;
+    border: solid 3px rgb(25, 23, 44);
+    width: 50%; 
+    height: 450px
+}
+
+#apoio{
+    text-align: center;
+}
+
+body {
+    background-color: #dedede;
+}
