@@ -83,8 +83,8 @@ class CadastrarView(FormView):
         password = form.cleaned_data['password']
 
         # Verificar se o usuário já existe com o título de eleitor fornecido
-        if User.objects.filter(username=titulo_eleitor).exists():
-            return HttpResponse('Usuário já cadastrado')
+        # if User.objects.filter(username=titulo_eleitor).exists():
+        #     return HttpResponse('Usuário já cadastrado')
 
         # Criar e salvar o usuário no modelo User do Django
         user_django = User.objects.create_user(username=titulo_eleitor, password=password)
@@ -112,6 +112,9 @@ class CadastrarView(FormView):
             
 
         return render(request, 'cadastrar.html')
+    
+    def form_invalid(self, form):
+        return super().form_invalid(form)
 
 
 from django.shortcuts import render, get_object_or_404

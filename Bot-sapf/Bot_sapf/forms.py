@@ -40,7 +40,7 @@ class LoginForm(forms.Form):
             
             # Verifica o título no banco de dados
             verifica_titulo = User.objects.filter(username=titulo_eleitor).first()
-            if verifica_titulo is None:
+            if not verifica_titulo:
                 self.add_error("titulo_eleitor", "Título de eleitor não cadastrado.")
                 return cleaned_data
             
@@ -100,7 +100,8 @@ class UserRegistrationForm(forms.ModelForm):
     nome_do_partido = forms.CharField(
         initial='Partido Desenvolvimento Sustentável',
         max_length=30,
-        required=False
+        required=False,
+        widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'campo-partido'})
     )
     
     password = forms.CharField(
@@ -112,6 +113,25 @@ class UserRegistrationForm(forms.ModelForm):
             }
         )
     )
+    
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        nome = cleaned_data.get('nome_completo')
+        titulo_eleitor = cleaned_data.get('titulo_eleitor')
+        cpf = cleaned_data.get('cpf')
+        nome_do_partido = cleaned_data.get('nome_do_partido')
+        password = cleaned_data.get('password')
+        
+        if len(titulo_eleitor) != 12:
+            self.add_error('titulo_eleitor', "O título de eleitor deve conter exatamente 12 dígitos")
+            
+        verifica_titulo = User.objects.filter(username=titulo_eleitor).exists()
+        if verifica_titulo:
+            self.add_error("titulo_eleitor", "Usuário já cadastrado.")
+            return cleaned_data
+
+            
 
     class Meta:
         model = User

@@ -25,13 +25,19 @@
                         <input name="nome_completo" type="text" placeholder="Nome Completo" id="nome">
                         <br>
                         Título de Eleitor:
-                        <input name="titulo_eleitor" type="text" placeholder="Título de Eleitor" id="Titueleitor">
-                        <br>
+                        {{ form.titulo_eleitor }}
+
+                        {% if form.titulo_eleitor.errors %} <!-- Exibe erros se houver -->
+                            <div class="alert-danger">
+                                {{ form.titulo_eleitor.errors }}
+                            </div>
+                        {% endif %}
+                        
                         CPF:
                         <input name="cpf" type="text" placeholder="CPF" id="cpf">
                         <br>
                         Nome Completo do Partido:
-                        <input name="nome_do_partido" type="text" placeholder="Nome Completo do Partido" id="partido">
+                        {{ form.nome_do_partido }}
                         <br>
                          
                         Senha:

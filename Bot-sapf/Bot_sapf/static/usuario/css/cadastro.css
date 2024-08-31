@@ -40,6 +40,9 @@
     padding: 2px;
 }
 
+.campo-partido{
+    cursor: url('path/to/red-lock-cursor.png'), not-allowed;
+}
 
 #div_botao{
     text-align: center;

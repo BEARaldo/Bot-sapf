@@ -33,22 +33,29 @@
     </div>
 
 
-<script>
-document.getElementById('cpfInput').addEventListener('input', function (e) {
-    var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
-    if (cpf.length > 0) {
-        cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Formata o CPF
-    }
-    if (cpf.length > 14) {
-        cpf = cpf.substring(0, 14); // Limita a 14 caracteres
-    }
-    e.target.value = cpf;
-});
-
-document.querySelector('form').addEventListener('submit', function () {
-    document.getElementById('tudo').style.display = 'block';
-});
-</script>
+    <script>
+        document.getElementById('cpfInput').addEventListener('input', function (e) {
+            var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+            if (cpf.length > 0) {
+                cpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4'); // Formata o CPF
+            }
+            if (cpf.length > 14) {
+                cpf = cpf.substring(0, 14); // Limita a 14 caracteres
+            }
+            e.target.value = cpf;
+        });
+        
+        document.querySelector('form').addEventListener('submit', function () {
+            document.getElementById('tudo').style.display = 'block';
+        });
+        
+        // Detectar quando o usuário clicar na seta de voltar
+        window.addEventListener('popstate', function(event) {
+            // Redirecionar para uma página específica quando o usuário clicar na seta de voltar
+            window.location.href = 'consultar_cpf/';
+        });
+        </script>
+        
 
 </body>
 </html>
