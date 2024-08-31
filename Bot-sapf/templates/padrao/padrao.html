@@ -32,10 +32,11 @@
             {% endif %}
             
 
-            
+            {% if user.is_superuser %}
             <div id="caixa_sair">
                 <a id="criar_user" href="{% url 'cadastrar_url' %}" class="btn">Criar novo usuário</a>
              </div>
+             {% endif %}
              
             <div id="caixa_sair">
                <a id="sair" href="{% url 'logout_user' %}" class="btn">Sair</a>
