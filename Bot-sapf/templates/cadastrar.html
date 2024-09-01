@@ -13,6 +13,10 @@
     
 </head>
 <body>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button id="voltar" type="button" class="btn btn-primary"> < Voltar</button>
+    </div>
+
         <div class="container-fluid">
             <div class="box">
                 <div id="quadradin">
@@ -35,7 +39,7 @@
                         
                         CPF:
                         {{ form.cpf }}
-                        
+
                         <br>
 
                         Senha:
@@ -54,6 +58,7 @@
         </div>
 
         <script>
+            // Formata o CPF enquanto o usuário digita
             document.getElementById('cpf').addEventListener('input', function (e) {
                 var cpf = e.target.value.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
                 if (cpf.length > 0) {
@@ -64,20 +69,28 @@
                 }
                 e.target.value = cpf;
             });
-
-            
+        
+            // Exibe o elemento com id 'tudo' quando o formulário é enviado
             document.querySelector('form').addEventListener('submit', function () {
                 document.getElementById('tudo').style.display = 'block';
             });
+        
+            // Alterna a visibilidade da senha
             function togglePasswordVisibility() {
-                    var passwordInput = document.getElementById("senha");
-                    if (passwordInput.type === "password") {
-                        passwordInput.type = "text";
-                    } else {
-                        passwordInput.type = "password";
-                    }
+                var passwordInput = document.getElementById("senha");
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
                 }
+            }
+        
+            // Redireciona para outra página ao clicar no botão
+            document.getElementById('voltar').addEventListener('click', function () {
+                window.location.href = "{% url 'consultar_cpf' %}"; // Substitua 'nome_da_sua_view' pelo nome da URL desejada
+            });
         </script>
+        
 
 </body>
 </html>
