@@ -120,7 +120,7 @@ class UserRegistrationForm(forms.ModelForm):
         nome = cleaned_data.get('nome_completo')
         titulo_eleitor = cleaned_data.get('titulo_eleitor')
         cpf = cleaned_data.get('cpf')
-        nome_do_partido = cleaned_data.get('nome_do_partido')
+        # nome_do_partido = cleaned_data.get('nome_do_partido')
         password = cleaned_data.get('password')
         
         if len(titulo_eleitor) != 12:
@@ -135,7 +135,7 @@ class UserRegistrationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['titulo_eleitor', 'password', 'nome_do_partido', 'is_superuser']
+        fields = ['titulo_eleitor', 'password', 'is_superuser']
         
         
         
