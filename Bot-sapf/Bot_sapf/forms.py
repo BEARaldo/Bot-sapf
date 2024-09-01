@@ -97,12 +97,12 @@ class UserRegistrationForm(forms.ModelForm):
         widget=forms.CheckboxInput(attrs={'id': 'ver_senha'})
     )
     
-    nome_do_partido = forms.CharField(
-        initial='Partido Desenvolvimento Sustentável',
-        max_length=30,
-        required=False,
-        widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'campo-partido'})
-    )
+    # nome_do_partido = forms.CharField(
+    #     initial='Partido Desenvolvimento Sustentável',
+    #     max_length=30,
+    #     required=False,
+    #     widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'campo-partido'})
+    # )
     
     password = forms.CharField(
         widget=forms.PasswordInput(

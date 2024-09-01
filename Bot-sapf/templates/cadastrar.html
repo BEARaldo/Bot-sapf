@@ -22,7 +22,7 @@
                     <form class="formulario" action="{% url 'cadastrar_url' %}" method="POST">
                         {% csrf_token %}
                         Nome:
-                        <input name="nome_completo" type="text" placeholder="Nome Completo" id="nome">
+                        {{ form.nome_completo }}
                         <br>
                         Título de Eleitor:
                         {{ form.titulo_eleitor }}
@@ -34,14 +34,12 @@
                         {% endif %}
                         
                         CPF:
-                        <input name="cpf" type="text" placeholder="CPF" id="cpf">
+                        {{ form.cpf }}
+                        
                         <br>
-                        Nome Completo do Partido:
-                        {{ form.nome_do_partido }}
-                        <br>
-                         
+
                         Senha:
-                        <input name="password" type="password" placeholder="Senha" id="senha">
+                        {{ form.password }}
                         <br>
                         <input id="ver_senha" type="checkbox" onclick="togglePasswordVisibility()"> ver senha
                         <br>

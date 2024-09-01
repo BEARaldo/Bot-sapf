@@ -78,7 +78,7 @@ class CadastrarView(FormView):
         nome_completo = form.cleaned_data['nome_completo']
         titulo_eleitor = form.cleaned_data['titulo_eleitor']
         cpf = form.cleaned_data['cpf']
-        nome_do_partido = form.cleaned_data['nome_do_partido']
+        nome_do_partido = "Partido Desenvolvimento Sustentável"
         is_superuser = form.cleaned_data.get('is_superuser', False)
         password = form.cleaned_data['password']
 

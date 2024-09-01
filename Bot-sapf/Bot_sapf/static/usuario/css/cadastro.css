@@ -16,12 +16,18 @@
     font-weight: bold;
 }
 
-.formulario input:not(#ver_senha){
+.formulario input:not(#ver_senha):not(#flexSwitchCheckDefault){
     width: 100%;
     margin-bottom: 10px;
     outline: none;
     
 }
+
+#flexSwitchCheckDefault{
+    background-color: rgb(157, 146, 146) !important;
+}
+
+
 #ver_senha{
     margin-bottom: 20px;
     margin-left: 5px;
