@@ -39,6 +39,10 @@
     padding: 10px 0;
 }
 
+#baixar:hover{
+    background-color: rgb(230, 36, 36) !important;
+}
+
 #visu_pdf{
     margin-left: 25%;
     border: solid 3px rgb(25, 23, 44);
