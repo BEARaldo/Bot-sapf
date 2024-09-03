@@ -12,27 +12,40 @@
             SAPF - Partido do Desenvolvimento Sustentável
         </a>
     </nav>
-<br>
-    <div id="content">
-        <div id="nabar">
-            <p>Nome: {{ user_data.name }}</p>
-            <p>Nº Título: {{ user_data.titulo }}</p>
-            <p>Partido: {{ user_data.partido }}</p>
-        </div>
+    <br>
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button id="voltar" type="button" class="btn btn-primary"> < Voltar</button>
     </div>
-        <div style="width: 50%; height: 450px; border: solid 3px rgb(25, 23, 44); margin-left: 25%;">
-            <embed src="{{ MEDIA_URL }}{{ resultado }}" type="application/pdf" width="100%" height="100%">
-        </div>
+    <div style="width: 50%; height: 450px; border: solid 3px rgb(25, 23, 44); margin-left: 25%;">
+        <embed src="{{ MEDIA_URL }}{{ resultado }}" type="application/pdf" width="100%" height="100%">
+    </div>
     <div>
-    <p>Debug PDF Path: "{{ MEDIA_URL }}{{ resultado }}</p>
-</div>
+        <p>Debug PDF Path: "{{ MEDIA_URL }}{{ resultado }}</p>
+    </div>
 
+    <!-- Botão para baixar o PDF substituindo o botão "Cadastrar Apoio" -->
     <div id="apoio">
-    <button  type="button" class="btn btn-success">Cadastrar Apoio</button>
+        <button id="baixar" type="button" class="btn btn-success">Baixar PDF</button>
     </div>
 
     <footer id="footer">
         <p>SAPF - Sistema de Apoiamento a Partido em Formação, Versão: 2.17.11, Tribunal Superior Eleitoral.</p>
     </footer>
+
+    <script>
+        // Redireciona para outra página ao clicar no botão "Voltar"
+        document.getElementById('voltar').addEventListener('click', function () {
+            window.location.href = "{% url 'consultar_cpf' %}";
+        });
+
+        // Baixar o PDF ao clicar no botão "Baixar PDF"
+        document.getElementById('baixar').addEventListener('click', function () {
+            const pdfUrl = "{{ MEDIA_URL }}{{ resultado }}";
+            const link = document.createElement('a');
+            link.href = pdfUrl;
+            link.download = 'documento.pdf'; // Nome do arquivo baixado
+            link.click();
+        });
+    </script>
 </body>
 </html>

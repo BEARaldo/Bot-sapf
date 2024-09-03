@@ -178,7 +178,6 @@ class ConsultaEleitoralView(View):
                 #return redirect('serve_pdf', pdf_key=pdf_key)
                 #return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
                 #HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_url': pdf_url}))
-                
                 return render(request, './test_diretorio/pdf.html', {'resultado': f"pdfs/{self.titulo_consultor}/{self.resultado['nTitulo']}.pdf"})
                 return HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_key': pdf_key}))
     
