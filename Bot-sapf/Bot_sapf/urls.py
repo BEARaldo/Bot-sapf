@@ -13,7 +13,7 @@ urlpatterns = [
     path('', LoginView.as_view(), name='login_view'),
     path('login/', LoginView.as_view(), name='login_view'),
     path('base/', TemplateView.as_view(template_name='padrao/verificar_login.html'), name='redirect_template'),
-
+    # path('usuarios/', views.usuarios, name='usuarios'),
     path('cadastrar/', CadastrarView.as_view(), name='cadastrar_url'),
     path('consultar_cpf/', ConsultaCitizenView.as_view(), name='consultar_cpf'),
     #path('accounts/', include('django.contrib.auth.urls')),

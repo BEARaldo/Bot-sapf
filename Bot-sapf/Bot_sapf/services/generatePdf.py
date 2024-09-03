@@ -6,7 +6,7 @@ import os
 
 
 def fill_form(source_pdf, dados, output_path):
-    print(output_path)
+    print(f'local saida dentro da func{output_path}')
     # Mapeamento dos campos do formulário para os dados fornecidos
     campos_mapa = {
         'nome': dados['nome'],
@@ -33,7 +33,7 @@ def fill_form(source_pdf, dados, output_path):
                     # print(annot.get_object())
                     annot.get_object().update({
                         NameObject('/V'): TextStringObject(campos_mapa[campo_form])
-                    })
+                    }) 
                     print('atualizado')
 
         # Adiciona a página modificada ao novo documento PDF
@@ -47,7 +47,7 @@ def fill_form(source_pdf, dados, output_path):
         except Exception as e:
             print(f'erro:{e}')
     return output_path
-# base_pdf_path = './ficha_apoio.pdf'
-# dados = {'nome': 'Geraldo Pereira', 'data1': '22', 'data2':'33','data3':'4444', 'titulo': '025239362089', 'zona': 'DF 005'}
-# # # dados = ['data1', 'nome', 'data2', 'data3', 'titulo', 'zona', 'nomeColetor', 'tituloColetor']
-# update_pdf_contents(dados, base_pdf_path, "./updated.pdf")
+#base_pdf_path = './ficha_apoio.pdf'
+#dados = {'nome': 'Geraldo Pereira', 'data_d': '22', 'data_m':'33','data_a':'4444', 'titulo': '025239362089', 'zona': 'DF 005'}
+##dados = ['data1', 'nome', 'data2', 'data3', 'titulo', 'zona', 'nomeColetor', 'tituloColetor']
+#fill_form(base_pdf_path, dados, "./updated.pdf")

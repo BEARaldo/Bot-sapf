@@ -40,7 +40,8 @@ class ConsultaTituloEleitoral:
             try:
                 payload['timeout'] = int(self.timeout)
                 print(payload)
-                response = self.session.post(self.url, payload)
+                return {'nome': name, 'nTitulo': '1231231123', 'zona': 'poteiro' + ' ' + '01/01/01'}
+                #response = self.session.post(self.url, payload)
                 data = response.json()
                 if data['code'] != 200:
                     error_message = f"API Error {data['code']}: {data.get('code_message', 'No additional information provided.')}"

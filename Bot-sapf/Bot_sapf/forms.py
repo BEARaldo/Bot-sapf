@@ -139,7 +139,17 @@ class UserRegistrationForm(forms.ModelForm):
         
         
         
-        
+class ProcurarForm(forms.Form):
+    cpf = forms.CharField(
+        max_length=14,
+        widget=forms.TextInput(
+            attrs={
+                'name': 'cpf',
+                'placeholder': 'CPF',
+                'id': 'cpf',
+            }
+        )
+    )
 
 
 

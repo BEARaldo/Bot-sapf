@@ -1,0 +1,14 @@
+{% load static %}
+
+
+
+
+{% if not user.is_authenticated %}
+<script>
+    setTimeout(function(){
+        window.location.href = "{% url 'login/' %}";
+    }, 0);  // Redireciona após 3 segundos
+</script>
+{% endif %}
+
+

@@ -1,4 +1,10 @@
-
+.voltar{
+    background-color: rgb(52, 50, 50);
+    padding: 20px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
 
 .box{
     border: double 5px;
@@ -16,12 +22,18 @@
     font-weight: bold;
 }
 
-.formulario input:not(#ver_senha){
+.formulario input:not(#ver_senha):not(#flexSwitchCheckDefault){
     width: 100%;
     margin-bottom: 10px;
     outline: none;
     
 }
+
+#flexSwitchCheckDefault{
+    background-color: rgb(157, 146, 146) !important;
+}
+
+
 #ver_senha{
     margin-bottom: 20px;
     margin-left: 5px;
@@ -40,6 +52,9 @@
     padding: 2px;
 }
 
+.campo-partido{
+    cursor: url('path/to/red-lock-cursor.png'), not-allowed;
+}
 
 #div_botao{
     text-align: center;
@@ -60,5 +75,6 @@
         width: 90%;
     }
 }
+
 
 

@@ -10,7 +10,6 @@ from django.contrib.auth import logout, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.conf import settings
-
 from .forms import LoginForm
 from .services import sapf_connect, tituloEleitoral_connect, cpfAPI_connect, generatePdf
 from .services.sapf_connect import UserSession
@@ -140,8 +139,9 @@ class ConsultaEleitoralView(View):
     async def get(self, request):
         import uuid
         # Recupera variáveis da URL
+        print("consultando o deskdata.")
         consulta_dados = await sync_to_async(request.session.get)('consulta_dados', {})
-        # print(f"Eleitoral: {consulta_dados}") #Verificar chegada dos dados
+        print(f"Eleitoral: {consulta_dados}") #Verificar chegada dos dados
         nome = consulta_dados.get('Nome')
         nomeMae = consulta_dados.get('Nome da mãe')
         dataNascimento = consulta_dados.get('Nascimento')
@@ -154,8 +154,8 @@ class ConsultaEleitoralView(View):
         consultor = tituloEleitoral_connect.ConsultaTituloEleitoral("t43krlWneEj99OBMvP3JCIfveSQY8fr4dI2HbZtM")
         self.dados_eleitorais = await sync_to_async(consultor.execute)(dataNascimento, nomeMae, nome)
 
-        dados_logados = await sync_to_async(request.session.get)('user_data', {})
-        print(dados_logados)
+        dados_logados = await sync_to_async(request.session.get)('consulta_dados', {})
+        print(f'to logado{dados_logados}')
 
         self.resultado = {
             'nome': nome,
@@ -168,17 +168,19 @@ class ConsultaEleitoralView(View):
 
         print(f'pdf path 1: {pdf_path}')
         if pdf_path:
+            print('entrei no if')
             try:
                 pdf_key = str(uuid.uuid4())  # Gerar um identificador único
                 request.session['pdf_token'] = pdf_key
     
                 request.session[pdf_key] = pdf_path  # Armazenar o caminho no objeto de sessão
                 print(f'\n\ngerado session key: {pdf_key}\ncaminho pego com request.session.get(pdf_key,): {request.session.get(pdf_key,{})}\n\n')
-                # return redirect('serve_pdf', pdf_key=pdf_key)
-                return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
-                # HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_url': pdf_url}))
-
-                # return HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_key': pdf_key}))
+                #return redirect('serve_pdf', pdf_key=pdf_key)
+                #return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
+                #HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_url': pdf_url}))
+                
+                return render(request, './test_diretorio/pdf.html', {'resultado': f"pdfs/{self.titulo_consultor}/{self.resultado['nTitulo']}.pdf"})
+                return HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_key': pdf_key}))
     
             except Exception as e:
                 HttpResponseNotFound({f'erro no negocio uuid:{e}'})
@@ -197,11 +199,12 @@ class ConsultaEleitoralView(View):
     #             return response
     #     else:
     #         return HttpResponseNotFound('The requested PDF was not found in our records.')
-    ############
-    def pdf_generate(self, ):
+############
+    def pdf_generate(self):
 
 
         #titulotemporario
+        print("Oi")
         self.titulo_consultor = 'n logado no SAPF'
         dados = {'nome': self.resultado['nome'],
                  'data_d': datetime.date.today().day,
@@ -322,6 +325,7 @@ class ConsultaCitizenView(View):
         user = request.user
         # Obtém as informações adicionais do usuário a partir do modelo Cadastrados
         cadastrado = get_object_or_404(Cadastrados, user=user)
+       
         context = {
         'nome_completo': cadastrado.nome_completo,
         'titulo_eleitor': cadastrado.titulo_eleitor,
@@ -331,5 +335,14 @@ class ConsultaCitizenView(View):
         return render(request, 'area/consultar_cpf.html', context)
 
 
+# @login_required
+# def usuarios(request):
+#     todos_usuarios = Cadastrados.objects.all()
+#     todos_usuarios_django = User.objects.all()
 
-
+#     # Combinar os QuerySets em uma única variável
+#     todos_usuarios_combinados = chain(todos_usuarios, todos_usuarios_django)
+    
+    
+#     return render(request, 'area/usuarios.html')
+    

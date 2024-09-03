@@ -5,7 +5,7 @@ class cpf_apiSession:
     def __init__(self):
         self.base_url = 'https://deskdata.com.br/pessoas/'
         self.cookie_manual = {
-            'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b': 'thihft%40gmail.com%7C1716940020%7CE7FzL6b1Q9aCnRDKl3yb3gtri0TBHHQxYfVrg2PFvXU%7Cc2f39963e447996b2abdad79f7d6a0c62832d6f9ec6ec505680cb30df244116b'
+            'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b': 'thihft%40gmail.com%7C1727889274%7ChmBePanfLUQXZkLPowAnRTNsC5ZHRlUHImbf5WAa7Ow%7C45dfdbd019adf63925c0ccdba4e7a9aa315f881534675de50c35f17c0877c382'
         }
         self.dados = None
 
@@ -32,15 +32,23 @@ class cpf_apiSession:
             "submit": "Consultar",
             "duplicate-query-confirm": "false"
         }
-        response_post = requests.post(self.base_url, data=payload_cpf, cookies=self.cookie_manual)
+        #response_post = requests.post(self.base_url, data=payload_cpf, cookies=self.cookie_manual)
+        #print(response_post)
+        self.dados = {'Nome': 'Geraldo Pereira De Castro Junior', 'Gênero': 'Masculino', 'Nascimento': '02/07/1997', 'Idade': '27', 'CPF': '056.900.451-95', 'Situação do CPF': 'Pendente de regularizacao', 'Região fiscal': 'DF-GO-MS-MT-TO', 'Data de registro do CPF': '28/12/2011', 'Nome da mãe': 'Cleonice Maria De Castro', 'Nome do pai': 'Geraldo Pereira De Castro', 'Nacionalidade': 'Brasileira', 'Signo': 'Cancer'}
+        #self.dados = self.capturar_dados(response_post.text)
+        print(f"Self dados é : {self.dados}")
+        return self.dados
+        
         if 'erros' not in response_post.text:
             self.dados = self.capturar_dados(response_post.text)
+            print(f"Self dados é : {self.dados}")
             return self.dados
         else:
             return "Solicitação falhou. O CPF informado é inválido."
 
 
 
-# if __name__ == '__main__':
-#     client = cpf_apiSession()
-#     print(client.consultar_cpf(input("Digite o CPF:")))
+
+if __name__ == '__main__':
+     client = cpf_apiSession()
+     print(client.consultar_cpf(input("Digite o CPF:")))

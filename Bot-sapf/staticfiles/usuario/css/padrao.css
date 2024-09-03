@@ -44,9 +44,7 @@ body {
     -webkit-backdrop-filter: blur(15px);
 }
 
-<<<<<<< HEAD
-=======
-#criar_user {
+#criar_user{
     color: white;
     backdrop-filter: blur(15px);
     background: rgba(255, 255, 255, 0.15);
@@ -54,7 +52,6 @@ body {
     -webkit-backdrop-filter: blur(15px);
 }
 
->>>>>>> cdf2d908f9b39f40c743a83e85f794016040a6e2
 #footer {
     position: fixed;
     left: 0;
@@ -90,3 +87,4 @@ body {
         padding: 5px;
     }
 }
+
