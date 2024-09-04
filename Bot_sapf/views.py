@@ -39,7 +39,7 @@ class LoginView(FormView):
         return super().form_invalid(form)
 
 # --------------- VIEWS DE LOGIN ANTIGA ---------------
-    # def form_valid(self, form):
+    # def form_valid(self, form):pyt
     #     titulo_eleitor = form.cleaned_data['titulo_eleitor']
     #     password = form.cleaned_data['password']
         
@@ -141,7 +141,15 @@ class ConsultaEleitoralView(View):
         # Recupera variáveis da URL
         print("consultando o deskdata.")
         consulta_dados = await sync_to_async(request.session.get)('consulta_dados', {})
-        print(f"Eleitoral: {consulta_dados}") #Verificar chegada dos dados
+        print(f"Eleitoral: {consulta_dados}") #Verificar chegada dos dados deskdata
+        #user_dados = await sync_to_async(request.session.get)('usuario', {})
+        #print(f"usuario: {consulta_dados}") #Verificar chegada dos dados usuario
+
+
+        self.nomelogado = request.session.get('usuario')
+        self.tituloLogado = request.session.get('titulo_logado')
+        print("Nome fazendo requisição:", self.nomelogado,'\ntitulo:',self.tituloLogado)
+
         nome = consulta_dados.get('Nome')
         nomeMae = consulta_dados.get('Nome da mãe')
         dataNascimento = consulta_dados.get('Nascimento')
@@ -151,11 +159,10 @@ class ConsultaEleitoralView(View):
                 "Todos os parâmetros (nome, nome da mãe, data de nascimento) são obrigatórios.")
 
         # A linha seguinte deve ser ajustada para usar uma versão assíncrona da API ou biblioteca que você está utilizando
-        consultor = tituloEleitoral_connect.ConsultaTituloEleitoral("t43krlWneEj99OBMvP3JCIfveSQY8fr4dI2HbZtM")
+        consultor = tituloEleitoral_connect.ConsultaTituloEleitoral("9pXLwuohqh0vfFlgcEDWOpM72tgegfQUMxe0-NC2")
         self.dados_eleitorais = await sync_to_async(consultor.execute)(dataNascimento, nomeMae, nome)
 
-        dados_logados = await sync_to_async(request.session.get)('consulta_dados', {})
-        print(f'to logado{dados_logados}')
+        print('Retornou infosimples')
 
         self.resultado = {
             'nome': nome,
@@ -178,7 +185,7 @@ class ConsultaEleitoralView(View):
                 #return redirect('serve_pdf', pdf_key=pdf_key)
                 #return HttpResponseRedirect(reverse('serve_pdf', kwargs={'pdf_key': pdf_key}))
                 #HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_url': pdf_url}))
-                return render(request, './test_diretorio/pdf.html', {'resultado': f"pdfs/{self.titulo_consultor}/{self.resultado['nTitulo']}.pdf"})
+                return render(request, './test_diretorio/pdf.html', {'resultado': f"pdfs/{self.nomelogado}/{self.resultado['nTitulo']}.pdf"})
                 return HttpResponseRedirect(request('./test_diretorio/pdf.html', {'pdf_key': pdf_key}))
     
             except Exception as e:
@@ -202,24 +209,29 @@ class ConsultaEleitoralView(View):
     def pdf_generate(self):
 
 
-        #titulotemporario
-        print("Oi")
-        self.titulo_consultor = 'n logado no SAPF'
+        #AQUI É ONDE ESTÁ DANDO ERRO NBA CONSULTA DOS DADOS
+        #print("CHEGUEI NO ERRO La")
+        #titulo = request.session.get('titulo_eleitor')
+        print("Título de eleitor salvo na sessão:", self.nomelogado,"\n",self.tituloLogado)
+        #print("Oi", titulo)
+
+        #self.titulo_consultor = request.session.get('titulo_eleitor')
+        #self.nome_completo = request.session.get('nome_completo')
         dados = {'nome': self.resultado['nome'],
                  'data_d': datetime.date.today().day,
                  'data_m': datetime.date.today().month,
                  'data_a': datetime.date.today().year,
                  'titulo': self.resultado['nTitulo'],
                  'zona': self.resultado['zona'],
-                 'titulo_coletor': self.titulo_consultor,
-                 'nome_coletor': 'nome logado no SAPF'}
+                 'titulo_coletor': self.tituloLogado,
+                 'nome_coletor': self.nomelogado}
         # dados = {'nome': 'Geraldo Pereira De Castro Junior', 'data1': '22', 'data2': '33', 'data3': '4444',
         #  'titulo': '025239362089', 'zona': 'DF 005'}
 
         print(f"pdf dados {dados}")
         input_pdf_path = os.path.join(settings.MEDIA_ROOT, 'ficha_apoio.pdf')
 
-        output_pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdfs', dados['titulo_coletor'])
+        output_pdf_path = os.path.join(settings.MEDIA_ROOT, 'pdfs', dados['nome_coletor'])
         os.makedirs(output_pdf_path, exist_ok=True)
         out_file = generatePdf.fill_form(input_pdf_path, dados, output_pdf_path + f'/{dados["titulo"]}.pdf')
         print(f"arquivo salvo {out_file}")
@@ -233,8 +245,8 @@ class pdf_loadPage(View):
             print(e)
 
         pdf_path = request.session.get(str(pdf_key))
-        pdf_keyy = request.session.get('pdf_token')
-        print('a',request.session.get(pdf_keyy,{}))
+        #pdf_keyy = request.session.get('pdf_token') #  TESTE
+        #print('a',request.session.get(pdf_keyy,{}))
         print(f'pdfpath no servePDF: {pdf_path}')
 
         if pdf_path and os.path.exists(pdf_path):
@@ -327,6 +339,11 @@ class ConsultaCitizenView(View):
         # lança um erro 404 se não for encontrado
         cadastrado = get_object_or_404(Cadastrados, user=user)
 
+        request.session['usuario'] = cadastrado.nome_completo
+        request.session['titulo_logado'] = cadastrado.titulo_eleitor
+
+        print("Nome salvo na sessão:", request.session.get('usuario'),'\ntitulo:',request.session.get('titulo_logado'))
+
         # Prepara o contexto com as informações do usuário para renderizar no template
         context = {
             'nome_completo': cadastrado.nome_completo,  # Nome completo do usuário
@@ -334,6 +351,8 @@ class ConsultaCitizenView(View):
             'cpf': cadastrado.cpf,  # CPF do usuário
             'nome_do_partido': cadastrado.nome_do_partido,  # Nome do partido associado ao usuário
         }
+        
+
 
         # Renderiza o template 'consultar_cpf.html' com o contexto preenchido
         return render(request, 'area/consultar_cpf.html', context)

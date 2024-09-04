@@ -15,8 +15,8 @@ def fill_form(source_pdf, dados, output_path):
         'data_a': dados['data_a'],
         'titulo_cidadao': dados['titulo'],
         'zona': dados['zona'],
-        'nome_coletor': 'Coletor Padrão',  # Exemplo de valor padrão, caso necessário
-        'titulo_coletor': '12345678'  # Exemplo de valor padrão, caso necessário
+        'nome_coletor': dados['nome_coletor'],
+        'titulo_coletor': dados['titulo_coletor'] 
     }
 
     # Carrega o PDF original

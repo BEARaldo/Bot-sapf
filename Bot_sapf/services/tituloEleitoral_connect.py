@@ -39,18 +39,22 @@ class ConsultaTituloEleitoral:
         for attempt in range(max_attempts):
             try:
                 payload['timeout'] = int(self.timeout)
-                print(payload)
-                return {'nome': name, 'nTitulo': '1231231123', 'zona': 'poteiro' + ' ' + '01/01/01'}
-                #response = self.session.post(self.url, payload)
+                print("dentro do titulo_connect ", payload)
+                
+                ##DADOS TESTE##
+                #return {'nome': name, 'nTitulo': '1231231123', 'zona': 'poteiro' + ' ' + '01/01/01'}
+                ##DADOS TESTE##
+
+                response = self.session.post(self.url, payload)
                 data = response.json()
-                if data['code'] != 200:
-                    error_message = f"API Error {data['code']}: {data.get('code_message', 'No additional information provided.')}"
-                    raise requests.HTTPError(error_message)
+                #if data['code'] != 200:
+                #    error_message = f"API Error {data['code']}: {data.get('code_message', 'No additional information provided.')}"
+                #    raise requests.HTTPError(error_message)
                 # elapsed_time = time.time() - start_time
                 #
                 # minutes, seconds = divmod(elapsed_time, 60)
                 # dados={'nome': name, 'nTitulo': data['data'][0]['titulo_eleitoral'], 'zona': data['data'][0]['uf'] + ' ' + data['data'][0]['zona']}
-                # print(f'Dados da api: {dados} ')
+                print(f'Dados da api: {data} ')
                 return {'nome': name, 'nTitulo': data['data'][0]['titulo_eleitoral'], 'zona': data['data'][0]['uf'] + ' ' + data['data'][0]['zona']}
             except requests.HTTPError as e:
                 print(f"Erro na API: {e}. Tentativa {attempt + 1}/{max_attempts}.")

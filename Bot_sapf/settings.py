@@ -12,11 +12,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-q&b=kb&n!8mfr92t25@$=&!*$z$6l!fuhg3!yizpjk#&7auaov"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',
-                 "172.22.99.159",
-                 "127.0.0.1"]
+                 "172.25.5.117"]
 
 
 # Application definition
@@ -100,9 +99,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -115,6 +114,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'Bot_sapf', 'static'),]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'Bot_sapf', 'media')
+
 
 
 
