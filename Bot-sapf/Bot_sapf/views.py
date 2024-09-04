@@ -320,18 +320,24 @@ class ConsultaCitizenView(View):
         return HttpResponseRedirect(reverse('consulta_eleitoral'))
 
     def get(self, request, *args, **kwargs):
-        # Obtém o usuário autenticado
+        # Obtém o usuário atualmente autenticado da requisição
         user = request.user
-        # Obtém as informações adicionais do usuário a partir do modelo Cadastrados
+
+        # Tenta recuperar o registro do usuário no modelo Cadastrados; 
+        # lança um erro 404 se não for encontrado
         cadastrado = get_object_or_404(Cadastrados, user=user)
-       
+
+        # Prepara o contexto com as informações do usuário para renderizar no template
         context = {
-        'nome_completo': cadastrado.nome_completo,
-        'titulo_eleitor': cadastrado.titulo_eleitor,
-        'cpf': cadastrado.cpf,
-        'nome_do_partido': cadastrado.nome_do_partido,
-    }
+            'nome_completo': cadastrado.nome_completo,  # Nome completo do usuário
+            'titulo_eleitor': cadastrado.titulo_eleitor,  # Título de eleitor do usuário
+            'cpf': cadastrado.cpf,  # CPF do usuário
+            'nome_do_partido': cadastrado.nome_do_partido,  # Nome do partido associado ao usuário
+        }
+
+        # Renderiza o template 'consultar_cpf.html' com o contexto preenchido
         return render(request, 'area/consultar_cpf.html', context)
+
 
 
 # @login_required
