@@ -157,9 +157,11 @@ class ConsultaEleitoralView(View):
         if not all([nome, nomeMae, dataNascimento]):
             return HttpResponseBadRequest(
                 "Todos os parâmetros (nome, nome da mãe, data de nascimento) são obrigatórios.")
+        infosimples = settings.INFOSIMPLES
 
         # A linha seguinte deve ser ajustada para usar uma versão assíncrona da API ou biblioteca que você está utilizando
-        consultor = tituloEleitoral_connect.ConsultaTituloEleitoral("9pXLwuohqh0vfFlgcEDWOpM72tgegfQUMxe0-NC2")
+        
+        consultor = tituloEleitoral_connect.ConsultaTituloEleitoral(infosimples)
         self.dados_eleitorais = await sync_to_async(consultor.execute)(dataNascimento, nomeMae, nome)
 
         print('Retornou infosimples')

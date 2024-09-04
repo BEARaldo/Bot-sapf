@@ -1,18 +1,26 @@
 import os
 from pathlib import Path
+from decouple import config
+
+
+
+#resgate da chaves para o ambiente
+WORDPRESS_LOGGED_IN = config('WORDPRESS_LOGGED_IN')
+INFOSIMPLES = config('INFOSIMPLES')
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-q&b=kb&n!8mfr92t25@$=&!*$z$6l!fuhg3!yizpjk#&7auaov"
+SECRET_KEY = config('DJANGO_SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost',
                  "172.25.5.117"]
