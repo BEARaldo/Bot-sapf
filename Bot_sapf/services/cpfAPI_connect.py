@@ -1,11 +1,13 @@
 import requests
+from django.conf import settings
 from bs4 import BeautifulSoup
 
 class cpf_apiSession:
     def __init__(self):
+        self.manualCookie = settings.WORDPRESS_LOGGED_IN
         self.base_url = 'https://deskdata.com.br/pessoas/'
         self.cookie_manual = {
-            'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b': 'thihft%40gmail.com%7C1727889274%7ChmBePanfLUQXZkLPowAnRTNsC5ZHRlUHImbf5WAa7Ow%7C45dfdbd019adf63925c0ccdba4e7a9aa315f881534675de50c35f17c0877c382'
+            'wordpress_logged_in_dd8782f26a34dfd3c646a09580a7757b': self.manualCookie
         }
         self.dados = None
 
