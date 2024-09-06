@@ -1,0 +1,4 @@
+# .ebextensions/fix_permissions.config
+commands:
+  01_create_pid_dir:
+    command: "mkdir -p /var/pids && chmod 755 /var/pids"
