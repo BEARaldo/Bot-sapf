@@ -23,7 +23,8 @@ SECRET_KEY = config('DJANGO_SECRET')
 DEBUG = False
 
 ALLOWED_HOSTS = ['localhost',
-                 "172.25.5.117"]
+                 "172.25.5.117",
+                 "172.22.99.159"]
 
 
 # Application definition

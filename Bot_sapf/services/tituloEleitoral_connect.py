@@ -42,7 +42,8 @@ class ConsultaTituloEleitoral:
                 print("dentro do titulo_connect ", payload)
                 
                 ##DADOS TESTE##
-                #return {'nome': name, 'nTitulo': '1231231123', 'zona': 'poteiro' + ' ' + '01/01/01'}
+                
+                return {'nome': name, 'nTitulo': '1231231123', 'zona': 'poteiro' + ' ' + '01/01/01'}
                 ##DADOS TESTE##
 
                 response = self.session.post(self.url, payload)

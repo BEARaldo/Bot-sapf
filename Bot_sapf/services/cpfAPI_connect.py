@@ -34,12 +34,12 @@ class cpf_apiSession:
             "submit": "Consultar",
             "duplicate-query-confirm": "false"
         }
-        response_post = requests.post(self.base_url, data=payload_cpf, cookies=self.cookie_manual)
-        print(response_post)
-        self.dados = self.capturar_dados(response_post.text)
+        #response_post = requests.post(self.base_url, data=payload_cpf, cookies=self.cookie_manual)
+        #print(response_post)
+        #self.dados = self.capturar_dados(response_post.text)
 
         ##DADOS TESTE##
-        #self.dados = {'Nome': 'Geraldo PereirA', 'Gênero': 'Masculino', 'Nascimento': '02/002/1992', 'Idade': '22', 'CPF': '222.222.222-22', 'Situação do CPF': '2222222', 'Região fiscal': 'DF-GO-MS-MT-TO', 'Data de registro do CPF': '22/22/2022', 'Nome da mãe': 'MAE', 'Nome do pai': 'PAI', 'Nacionalidade': 'Brasileira', 'Signo': 'macho'}
+        self.dados = {'Nome': 'Geraldo PereirA', 'Gênero': 'Masculino', 'Nascimento': '02/002/1992', 'Idade': '22', 'CPF': '222.222.222-22', 'Situação do CPF': '2222222', 'Região fiscal': 'DF-GO-MS-MT-TO', 'Data de registro do CPF': '22/22/2022', 'Nome da mãe': 'MAE', 'Nome do pai': 'PAI', 'Nacionalidade': 'Brasileira', 'Signo': 'macho'}
         
 
         ##DADOS TESTE##

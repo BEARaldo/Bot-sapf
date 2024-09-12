@@ -1,6 +1,8 @@
+
+from django.views.generic import TemplateView
 import datetime
 import os
-
+from django.http import JsonResponse
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import FormView, RedirectView, View, TemplateView
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, HttpResponse, HttpResponseNotFound, FileResponse
@@ -11,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.conf import settings
 from .forms import LoginForm
+from .forms import BuscarApoiadoresForm
 from .services import sapf_connect, tituloEleitoral_connect, cpfAPI_connect, generatePdf
 from .services.sapf_connect import UserSession
 import logging
@@ -354,11 +357,95 @@ class ConsultaCitizenView(View):
             'nome_do_partido': cadastrado.nome_do_partido,  # Nome do partido associado ao usuário
         }
         
-
-
         # Renderiza o template 'consultar_cpf.html' com o contexto preenchido
         return render(request, 'area/consultar_cpf.html', context)
 
+
+
+
+
+
+class ApoiadosView(View):
+    form_class = BuscarApoiadoresForm
+    template_name = 'administrador/apoiados.html'
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            titulo_eleitor = form.cleaned_data['buscar_apoiador']
+            
+            apoiadores = Cadastrados.objects.filter(titulo_eleitor=titulo_eleitor)
+            return render(request, self.template_name, {'apoiadores': apoiadores, 'form': form})
+        
+        # Em caso de formulário inválido, renderizar novamente com erros
+        return render(request, self.template_name, {'form': form})
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        apoiadores = Cadastrados.objects.all()
+        return render(request, self.template_name, {'apoiadores': apoiadores, 'form': form})
+
+
+
+# class ApoiadosView(View):
+#     form_class = BuscarApoiadoresForm
+#     template_name = 'administrador/apoiados.html'
+
+#     def post(self, request, *args, **kwargs):
+#         form = self.form_class(request.POST)
+#         if form.is_valid():
+#             titulo_eleitor = form.cleaned_data['buscar_apoiador']
+#             apoiadores = Cadastrados.objects.filter(titulo_eleitor=titulo_eleitor)
+#             return render(request, self.template_name, {'apoiadores': apoiadores, 'form': form})
+        
+#         # Em caso de formulário inválido, renderizar novamente com erros
+#         return render(request, self.template_name, {'form': form})
+
+#     def get(self, request, *args, **kwargs):
+#         form = self.form_class()
+#         apoiadores = Cadastrados.objects.all()
+#         return render(request, self.template_name, {'apoiadores': apoiadores, 'form': form})
+
+
+
+
+def excluir_cliente(request, titulo_eleitor):
+    apoiador = get_object_or_404(User, username=titulo_eleitor)
+    apoiador.delete()
+    return redirect('apoiadores') 
+
+
+
+#não funcionando
+def visualizar_ficha(request, titulo_eleitor):
+    # Definir o caminho completo para o PDF
+    pdf_path = os.path.join('media', 'pdfs', 'geraldo', f'{titulo_eleitor}.pdf')
+
+    # Verificar se o arquivo existe
+    if not os.path.exists(pdf_path):
+        return HttpResponseNotFound("PDF não encontrado.")
+
+    # Passar o caminho do PDF para o template
+    context = {
+        'pdf_path': pdf_path,
+    }
+
+    return render(request, 'administrador/ficha_apoiadores.html', context)
+
+
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 # @login_required

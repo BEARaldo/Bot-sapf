@@ -21,8 +21,18 @@ urlpatterns = [
     path('consulta_eleitoral/', ConsultaEleitoralView.as_view(), name='consulta_eleitoral'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('pdfs/<path:filename>', views.ServePDF.as_view(), name='serve_pdf'),
-
-
+    
+    # ------------ Minhas mudanças: ------------
+    
+    # Para o administrador ver a ficha
+    path('visualizar/<int:titulo_eleitor>/', views.visualizar_ficha, name='visualizar_ficha'),
+    
+    # Mostra todos os apoiadores em uma tabela
+    path('apoiadores/', ApoiadosView.as_view(), name='apoiadores'), 
+    
+    # URL que leva para a exclusão do usuário
+    path('excluir/<int:titulo_eleitor>/', views.excluir_cliente, name='excluir_apoiador'),
+    
     path('admin/', admin.site.urls),
 ]
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

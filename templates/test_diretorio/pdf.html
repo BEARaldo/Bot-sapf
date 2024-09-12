@@ -8,17 +8,20 @@
 <body>
     <nav id="barra" class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">
-            <img src="552250.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            <img src="{% static 'usuario/img/logo-pds.png' %}" style="margin-left: 10px;" width="150" height="30" class="d-inline-block align-top" alt="">
             SAPF - Partido do Desenvolvimento Sustentável
         </a>
     </nav>
-    <br>
+
+    
     <div class="btn-group" role="group" aria-label="Basic example">
         <button id="voltar" type="button" class="btn btn-primary"> < Voltar</button>
     </div>
+
     <div style="width: 50%; height: 450px; border: solid 3px rgb(25, 23, 44); margin-left: 25%;">
         <embed src="{{ MEDIA_URL }}{{ resultado }}" type="application/pdf" width="100%" height="100%">
     </div>
+
     <div>
         <p>Debug PDF Path: "{{ MEDIA_URL }}{{ resultado }}</p>
     </div>
@@ -27,6 +30,9 @@
     <div id="apoio">
         <button id="baixar" type="button" class="btn btn-success">Baixar PDF</button>
     </div>
+
+<br><br>
+
 
     <footer id="footer">
         <p>SAPF - Sistema de Apoiamento a Partido em Formação, Versão: 2.17.11, Tribunal Superior Eleitoral.</p>

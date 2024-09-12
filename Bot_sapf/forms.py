@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 import re
+from .models import Cadastrados
 
 # Classe para o Login
 
@@ -152,7 +153,30 @@ class ProcurarForm(forms.Form):
     )
 
 
-
+class BuscarApoiadoresForm(forms.Form):
+    buscar_apoiador = forms.CharField(
+        max_length=12,
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                'name': 'buscar_apoiadores',
+                'placeholder': 'Procure pelo título de eleitor',
+                'type': 'text',
+                'id': 'buscar_apoiadores',
+                'class': 'form-control',
+            }
+        )
+    )
+    
+    def clean(self):
+        cleaned_data = super().clean()
+        titulo_eleitor_digitado = cleaned_data.get('buscar_apoiador')  # Corrigido o nome do campo
+        
+        if titulo_eleitor_digitado and len(titulo_eleitor_digitado) != 12:
+            self.add_error('buscar_apoiador', "O título de eleitor deve conter exatamente 12 dígitos")  # Corrigido o nome do campo com erro
+        return cleaned_data
+        
+    
 
 
 
